@@ -6,24 +6,33 @@ using UnityEngine.PlayerLoop;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Propriété physisque")]
+    private float speedX;
+    private float speedY;
     [SerializeField]
     private float speedXMax = 0.5f;
     [SerializeField]
-    private float jumpHeigh = 1f;
-    [SerializeField]
-    private float gravity;
-    private float speedY;
-    [SerializeField]
     private float speedYMin; // vitesse de chute maximum (minimum car négative)
+    [SerializeField]
+    private float jumpHeight = 1f;
+    [SerializeField]
+    private float gravity = 0.3f;
+    [SerializeField]
+    private float horizontalGravity = 1f;
     [SerializeField]
     private int maxNumberOfJump;
     private int remainJump;
 
+    private Collider2D collider2d;
 
     private bool grounded;
     private bool rightWalled;
     private bool leftWalled;
 
+    [Header("Paramètres de détection des collisions")]
+    [SerializeField] private float maxCastDistance = 0.01f;
+    [SerializeField] private float tolerance = 0.01f;
+
+    /*
     [Header("GameObject - Ground Detectors")]
     [SerializeField]
     private Transform GBottomLeft;
@@ -44,17 +53,22 @@ public class PlayerMovement : MonoBehaviour
     private Transform CBottomLeft;
     [SerializeField]
     private Transform CTopRight;
+    */
+
+
+    private void Start()
+    {
+        collider2d = GetComponent<BoxCollider2D>();
+    }
 
     public void MoveX(float input)
     {
-        float speedX = input * speedXMax * Time.deltaTime;
+        speedX = input * speedXMax;
         if (speedX > 0 && rightWalled)
             speedX = 0;
         else if (speedX < 0 && leftWalled)
             speedX = 0;
-        transform.position = transform.position + new Vector3(speedX
-            , 0
-            , 0);
+        //transform.position = transform.position + new Vector3(speedX * Time.deltaTime, 0, 0);
     }
 
 
@@ -62,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (remainJump > 0)
         {
-            speedY = jumpHeigh;
+            speedY = jumpHeight;
             grounded = false;
             remainJump--;
         }
@@ -71,11 +85,14 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         ComputeSpeedY();
-        transform.position += new Vector3(0, speedY, 0) * Time.deltaTime;
+        ComputeSpeedX();
         CheckAllCollisions();
+        transform.position += new Vector3(speedX, speedY, 0) * Time.deltaTime;
+        //CheckAllCollisionsOld();
     }
 
-    private void CheckAllCollisions()
+    /*
+    private void CheckAllCollisionsOld()
     {
         Collider2D checkCollid = Physics2D.OverlapArea(GBottomLeft.position,GTopRight.position);
 
@@ -116,6 +133,108 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Collision Ceilling : " + checkCollid.name);
             speedY = 0;
         }
+    }*/
+
+    private void CheckAllCollisions()
+    {
+        RaycastHit2D[] _results = new RaycastHit2D[5];
+        int _nbResult;
+
+        #region CheckGrounded
+        _nbResult = collider2d.Cast(Vector2.down, _results, maxCastDistance);
+        //Debug.Log("Results : " + _nbResult);
+        if (_nbResult == 0)
+            grounded = false;
+        else
+        {
+            float _nearestDistance = Mathf.Infinity;
+            for (int i = 0; i < _nbResult; i++)
+            {
+                RaycastHit2D _rch2d = _results[i];
+                if (_rch2d.collider != null && (_rch2d.collider.CompareTag("Solide") || _rch2d.collider.CompareTag("Holographique")) && (_rch2d.distance < _nearestDistance))
+                    _nearestDistance = _rch2d.distance;
+            }
+
+            //Debug.Log("Distance : " + _nearestDistance + " <? " + -speedY*Time.deltaTime);
+            if (speedY < 0 && _nearestDistance < -speedY * Time.deltaTime)
+            {
+                // grounded :
+                grounded = true;
+                speedY = 0;
+                transform.position += new Vector3(0, -_nearestDistance + tolerance, 0);
+                remainJump = maxNumberOfJump;
+            }
+        }
+        #endregion
+        
+        #region CheckCeilling
+        _nbResult = collider2d.Cast(Vector2.up, _results, maxCastDistance);
+        Debug.Log("Results : " + _nbResult);
+        if (_nbResult != 0)
+        {
+            float _nearestDistance = Mathf.Infinity;
+            for (int i = 0; i < _nbResult; i++)
+            {
+                RaycastHit2D _rch2d = _results[i];
+                if (_rch2d.collider != null && _rch2d.collider.CompareTag("Solide") && (_rch2d.distance < _nearestDistance))
+                    _nearestDistance = _rch2d.distance;                
+            }
+
+            Debug.Log("Distance : " + _nearestDistance + " <? " + speedY * Time.deltaTime);
+            if (speedY > 0 && _nearestDistance < speedY * Time.deltaTime)
+            {
+                speedY = 0;
+                transform.position += new Vector3(0, _nearestDistance - 0.01f, 0);
+            }
+        }
+        #endregion
+        
+        #region CheckWallRight
+        _nbResult = collider2d.Cast(Vector2.right, _results, maxCastDistance);
+        if (_nbResult == 0)
+            rightWalled = false;
+        else
+        {
+            float _nearestDistance = Mathf.Infinity;
+            for (int i = 0; i < _nbResult; i++)
+            {
+                RaycastHit2D _rch2d = _results[i];
+                if (_rch2d.collider != null && (_rch2d.collider.CompareTag("Solide") || _rch2d.collider.CompareTag("Holographique")) && (_rch2d.distance < _nearestDistance))
+                    _nearestDistance = _rch2d.distance;                
+            }
+            
+            if (speedX > 0 && _nearestDistance < speedX * Time.deltaTime)
+            {
+                rightWalled = true;
+                speedX = 0;
+                transform.position += new Vector3(_nearestDistance - tolerance, 0, 0);
+            }
+        }
+        #endregion
+
+        #region CheckWallLeft
+        _nbResult = collider2d.Cast(Vector2.left, _results, maxCastDistance);
+        if (_nbResult == 0)
+            leftWalled = false;
+        else
+        {
+            float _nearestDistance = Mathf.Infinity;
+            for (int i = 0; i < _nbResult; i++)
+            {
+                RaycastHit2D _rch2d = _results[i];
+                if (_rch2d.collider != null && (_rch2d.collider.CompareTag("Solide") || _rch2d.collider.CompareTag("Holographique")) && (_rch2d.distance < _nearestDistance))
+                    _nearestDistance = _rch2d.distance;
+            }
+
+            if (speedX < 0 && _nearestDistance < -speedX * Time.deltaTime)
+            {
+                leftWalled = true;
+                speedX = 0;
+                transform.position += new Vector3(tolerance - _nearestDistance, 0, 0);
+            }
+        }
+        #endregion
+
     }
 
     private void ComputeSpeedY()
@@ -131,4 +250,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void ComputeSpeedX()
+    {
+        if (speedX > 0)
+        {
+            speedX -= horizontalGravity;
+            if (speedX < 0)
+                speedX = 0;
+        }
+        else if (speedX < 0)
+        {
+            speedX += horizontalGravity;
+            if (speedX > 0)
+                speedX = 0;
+        }
+    }
 }
