@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,10 +15,14 @@ public class PlayerMovement : MonoBehaviour
     private float speedYMin; // vitesse de chute maximum (minimum car négative)
     [SerializeField]
     private float jumpHeight = 1f;
+
+    private float jumpSpeedX;
+    [SerializeField]
+    private float jumpSpeedXMax;
     [SerializeField]
     private float gravity = 0.3f;
     [SerializeField]
-    private float horizontalGravity = 1f;
+    private float friction = 1f;
     [SerializeField]
     private int maxNumberOfJump;
     private int remainJump;
@@ -73,8 +78,16 @@ public class PlayerMovement : MonoBehaviour
 
 
     public void Jump()
-    {
-        if (remainJump > 0)
+    { 
+        //Walljump
+        if((leftWalled ||rightWalled) && !grounded){
+            speedY = jumpHeigh;
+            jumpSpeedX = leftWalled ? jumpSpeedXMax : -jumpSpeedXMax; //Pousse du mur
+            leftWalled = !leftWalled; rightWalled = !rightWalled;
+            remainJump = 1;
+        }
+        
+        else if (remainJump > 0)
         {
             speedY = jumpHeight;
             grounded = false;
@@ -237,18 +250,21 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void ComputeSpeedY()
+    private void ComputeSpeed()
     {
+        //gère la vitesse sur Y:
         if (grounded)
             speedY = 0;
         else
         {
             if(speedY > speedYMin)
             {
-                speedY -= gravity;
+                if(leftWalled || rightWalled)
+                    speedY -= gravity/3;
+                else
+                    speedY -= gravity;
             }
         }
-    }
 
     private void ComputeSpeedX()
     {
