@@ -629,10 +629,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedXMax: 10
   speedYMin: -10
-  jumpHeight: 1
+  jumpHeight: 5
+  wallJumpSpeed: 1
   jumpSpeedXMax: 15
   gravity: 0.3
-  friction: 0.3
+  friction: 1
+  wallJumpFriction: 0.1
   maxNumberOfJump: 2
   maxCastDistance: 0.1
   tolerance: 0.05
