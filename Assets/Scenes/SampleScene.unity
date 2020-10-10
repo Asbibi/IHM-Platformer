@@ -605,6 +605,7 @@ MonoBehaviour:
   - {fileID: 1344222106}
   - {fileID: 2144014943}
   - {fileID: 322275377}
+  playerToWind: {fileID: 857834585}
 --- !u!1 &431397390
 GameObject:
   m_ObjectHideFlags: 0

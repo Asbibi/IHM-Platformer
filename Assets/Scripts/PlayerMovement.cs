@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeedX;
     private float jumpSpeedX;
     private float speedY;
+    private Vector2 wind;
     [SerializeField]
     private float speedXMax = 0.5f;
     [SerializeField]
@@ -49,10 +50,15 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
+        // Compute speeds
         ComputeSpeedY();
         ComputeSpeedX();
-        Debug.Log("SpeedX : " + speedX + " = " + moveSpeedX + " + " + jumpSpeedX);
+        // Add wind to those speeds
+        speedX += wind.x;
+        speedY += wind.y;
+        // Check Collisions
         CheckAllCollisions();
+        // Actually move
         transform.position += new Vector3(speedX, speedY, 0) * Time.deltaTime;
     }
 
@@ -83,6 +89,10 @@ public class PlayerMovement : MonoBehaviour
             grounded = false;
             remainJump--;
         }
+    }
+    public void SetWind(Vector2 _wind)
+    {
+        wind = _wind;
     }
 
 

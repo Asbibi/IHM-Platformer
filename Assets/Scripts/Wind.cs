@@ -5,7 +5,7 @@ public class Wind : MonoBehaviour
 {
     [SerializeField] private Vector2 windForce = Vector2.zero;
     [SerializeField] private Image[] windUIImages = new Image[3];
-    private PlayerMovement playerToWind;
+    [SerializeField] private PlayerMovement playerToWind;
 
     
     Vector3 startpos;
@@ -26,7 +26,7 @@ public class Wind : MonoBehaviour
         SetWind(windForce);
         if (windForce != Vector2.zero)
         {
-            transform.position += transform.right * windForce.magnitude * 3f;
+            transform.position += transform.right * windForce.magnitude * 3;
             if ((transform.position - startpos).magnitude > length)
                 transform.position = startpos;
         }
@@ -35,6 +35,7 @@ public class Wind : MonoBehaviour
     public void SetWind(Vector2 _windForce)
     {
         windForce = _windForce;
+        playerToWind.SetWind(windForce);
         if (_windForce != Vector2.zero)
             transform.rotation = Quaternion.Euler(Vector3.forward * Mathf.Atan2(windForce.y, windForce.x) * Mathf.Rad2Deg);
         foreach (Image _im in windUIImages)
