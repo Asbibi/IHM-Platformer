@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeedX;
     private float jumpSpeedX;
     private float speedY;
-    private Vector2 wind;
+    private Vector2 wind = Vector2.zero;
     [SerializeField]
     private float speedXMax = 0.5f;
     [SerializeField]

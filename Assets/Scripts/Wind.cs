@@ -4,8 +4,7 @@ using UnityEngine.UI;
 public class Wind : MonoBehaviour
 {
     [SerializeField] private Vector2 windForce = Vector2.zero;
-    [SerializeField] private Image[] windUIImages = new Image[3];
-    [SerializeField] private PlayerMovement playerToWind;
+    [SerializeField] private Image[] windUIImages = new Image[2];
 
     
     Vector3 startpos;
@@ -17,13 +16,11 @@ public class Wind : MonoBehaviour
     {        
         startpos = transform.position;
         length = 420;
-        SetWind(windForce);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        SetWind(windForce);
         if (windForce != Vector2.zero)
         {
             transform.position += transform.right * windForce.magnitude * 3;
@@ -32,13 +29,22 @@ public class Wind : MonoBehaviour
         }
     }
 
-    public void SetWind(Vector2 _windForce)
+    public void SetWindX(float _windForce, PlayerMovement _player)
     {
-        windForce = _windForce;
-        playerToWind.SetWind(windForce);
-        if (_windForce != Vector2.zero)
+        windForce.x = _windForce;
+        ApplyWindChanges(_player);
+    }
+    public void SetWindY(float _windForce, PlayerMovement _player)
+    {
+        windForce.y = _windForce;
+        ApplyWindChanges(_player);
+    }
+    private void ApplyWindChanges(PlayerMovement _player)
+    {
+        _player.SetWind(windForce);
+        if (windForce != Vector2.zero)
             transform.rotation = Quaternion.Euler(Vector3.forward * Mathf.Atan2(windForce.y, windForce.x) * Mathf.Rad2Deg);
         foreach (Image _im in windUIImages)
-            _im.color = new Color(1, 1, 1, Mathf.Min(0.4f, _windForce.magnitude / 10));
+            _im.color = new Color(1, 1, 1, Mathf.Min(0.4f, windForce.magnitude / 10));
     }
 }
