@@ -1,10 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     private PlayerMovement playerMovement;
+    public string horizInput = "Cont_HorizSL";
+    public string jumpInput = "Cont_A";
+    public string dashInput = "Cont_B";
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +20,9 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0)
             playerMovement.MoveX(Input.GetAxis("Horizontal"));
-        if (Input.GetButtonDown("Jump"))
+        else if (Input.GetAxis(horizInput) !=0)
+            playerMovement.MoveX(Input.GetAxis(horizInput));
+        if (Input.GetButtonDown(jumpInput) || Input.GetButtonDown("Jump"))
             playerMovement.Jump();
     }
 
