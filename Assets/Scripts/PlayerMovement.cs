@@ -10,26 +10,18 @@ public class PlayerMovement : MonoBehaviour
     private float jumpSpeedX;
     private float speedY;
     private Vector2 wind = Vector2.zero;
-    [SerializeField]
-    private float speedXMax = 0.5f;
-    [SerializeField]
-    private float speedYMin = -10; // vitesse de chute maximum (minimum car négative)
-    [SerializeField]
-    private float jumpSpeedYInit = 1f;    
-    [SerializeField]
-    private float jumpSpeedXMax = 15f;
+    public float speedXMax = 5;
+    public float speedYMin = -10; // vitesse de chute maximum (minimum car négative)
+    public float jumpSpeedYInit = 1f;    
+    public float jumpSpeedXMax = 15f;
 
     [Header("Frictions and Jump Parameters")]
-    [SerializeField]
-    private float gravity = 0.3f;
-    [SerializeField]
-    private float wallJumpGravity = 0.1f;   // gravité appliquée lorsque le joueur est contre un mur
-    [SerializeField]
-    private float friction = 1f;
-    [SerializeField]
-    private float wallJumpAirFriction = 1f; // friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
-    [SerializeField]
-    private int maxNumberOfJump = 2;
+    public float gravity = 0.3f;
+    public float wallFriction = 0.1f;   // gravité appliquée lorsque le joueur est contre un mur
+    public float friction = 1f;
+    public float wallJumpAirFriction = 1f; // friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
+
+    [SerializeField] private int maxNumberOfJump = 2;
     private int remainJump;
 
     private Collider2D collider2d;
@@ -39,8 +31,8 @@ public class PlayerMovement : MonoBehaviour
     private bool leftWalled;
 
     [Header("Paramètres de détection des collisions")]
-    [SerializeField] private float maxCastDistance = 0.01f;
-    [SerializeField] private float tolerance = 0.01f;
+    public float maxCastDistance = 0.01f;
+    public float replacementTolerance = 0.01f;
 
 
     // ===================== Unity Methods =====================
@@ -90,10 +82,17 @@ public class PlayerMovement : MonoBehaviour
             remainJump--;
         }
     }
+    public void SetNumberMaxJump(int _nb)
+    {
+        maxNumberOfJump = _nb;
+        if (grounded || remainJump > _nb)
+            remainJump = _nb;
+    }
     public void SetWind(Vector2 _wind)
     {
         wind = _wind;
     }
+ 
 
 
     // ===================== Collisions =====================
@@ -123,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
                 // grounded :
                 grounded = true;
                 speedY = 0;
-                transform.position += new Vector3(0, -_nearestDistance + tolerance, 0);
+                transform.position += new Vector3(0, -_nearestDistance + replacementTolerance, 0);
                 remainJump = maxNumberOfJump;
             }
         }
@@ -131,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
 
         #region CheckCeilling
         _nbResult = collider2d.Cast(Vector2.up, _results, maxCastDistance);
-        Debug.Log("Results : " + _nbResult);
+        //Debug.Log("Results : " + _nbResult);
         if (_nbResult != 0)
         {
             float _nearestDistance = Mathf.Infinity;
@@ -142,7 +141,7 @@ public class PlayerMovement : MonoBehaviour
                     _nearestDistance = _rch2d.distance;
             }
 
-            Debug.Log("Distance : " + _nearestDistance + " <? " + speedY * Time.deltaTime);
+            //Debug.Log("Distance : " + _nearestDistance + " <? " + speedY * Time.deltaTime);
             if (speedY > 0 && _nearestDistance < speedY * Time.deltaTime)
             {
                 speedY = 0;
@@ -170,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
                 rightWalled = true;
                 speedX = 0;
                 jumpSpeedX = 0;
-                transform.position += new Vector3(_nearestDistance - tolerance, 0, 0);
+                transform.position += new Vector3(_nearestDistance - replacementTolerance, 0, 0);
             }
         }
         #endregion
@@ -194,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
                 leftWalled = true;
                 speedX = 0;
                 jumpSpeedX = 0;
-                transform.position += new Vector3(tolerance - _nearestDistance, 0, 0);
+                transform.position += new Vector3(replacementTolerance - _nearestDistance, 0, 0);
             }
         }
         #endregion
@@ -212,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
             if(speedY > speedYMin)
             {
                 if((leftWalled || rightWalled) && (speedY <= 0))
-                    speedY -= wallJumpGravity;
+                    speedY -= wallFriction;
                 else
                     speedY -= gravity;
             }
