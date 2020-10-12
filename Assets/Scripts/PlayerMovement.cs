@@ -23,11 +23,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float gravity = 0.3f;
     [SerializeField]
-    private float wallJumpGravity = 0.1f;
+    private float wallJumpGravity = 0.1f;   // gravité appliquée lorsque le joueur est contre un mur
     [SerializeField]
     private float friction = 1f;
     [SerializeField]
-    private float wallJumpFriction = 1f;
+    private float wallJumpAirFriction = 1f; // friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
     [SerializeField]
     private int maxNumberOfJump = 2;
     private int remainJump;
@@ -221,7 +221,7 @@ public class PlayerMovement : MonoBehaviour
     private void ComputeSpeedX()
     {
         moveSpeedX = ComputeSpeedWithFriction(moveSpeedX, friction);
-        jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpFriction);
+        jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpAirFriction);
         if (grounded)
             jumpSpeedX = 0;
         speedX = moveSpeedX + jumpSpeedX;
