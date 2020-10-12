@@ -1,28 +1,12 @@
 ﻿using System.Globalization;
 using UnityEngine;
 
-public class UIParameterManager : MonoBehaviour
+public class UIParameterManager : UIMenuOpenable
 {
-    private bool menuOpen = false;
-    Animator animator;
-
     [SerializeField] PlayerMovement player = null;
     [SerializeField] Wind wind = null;
 
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-    }
-
-
-
-    // =============== Open/Close Menu =====================
-    public void ToggleOpenMenu()
-    {
-        menuOpen = !menuOpen;
-        animator.SetBool("Open", menuOpen);
-    }
-
+  
 
     // =============== Move Parameter Player =============== 
     public void SetMaxSpeedX(string _speedStr)
@@ -86,5 +70,4 @@ public class UIParameterManager : MonoBehaviour
     {
         wind.SetWindY(_windForce/5, player);
     }
-
 }
