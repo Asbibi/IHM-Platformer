@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlateformSpecial : MonoBehaviour
+public class PlatformSpecial : MonoBehaviour
 {
     protected PlayerMovement player = null;
     private bool playerDetected = false;

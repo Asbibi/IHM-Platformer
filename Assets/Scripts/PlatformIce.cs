@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class IcePlatform : PlateformSpecial
+public class PlatformIce : PlatformSpecial
 {
     [SerializeField] float newInertia = 0.97f;
     float playerInertia = -1;

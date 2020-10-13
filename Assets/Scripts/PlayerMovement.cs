@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private float speedX;
     private float moveSpeedX;
     private float jumpSpeedX;
-    private float speedY;
+    public float speedY;
     private Vector2 wind = Vector2.zero;
     public float speedXMax = 5;
     public float speedYMin = -10; // vitesse de chute maximum (minimum car négative)
@@ -87,6 +87,12 @@ public class PlayerMovement : MonoBehaviour
             remainJump--;
         }
     }
+    public void ForceJump(float _jumpSpeed)
+    {
+        speedY = _jumpSpeed;
+        grounded = false;
+        remainJump = maxNumberOfJump -1;
+    }
     public void Dash(float dir){
         //transform.position += new Vector3(dir * 10,0,0); // Téléportation
         jumpSpeedX = dashSpeed * dir;
@@ -142,13 +148,13 @@ public class PlayerMovement : MonoBehaviour
                 if (_rch2d.collider != null && (_rch2d.collider.CompareTag("Solide") || _rch2d.collider.CompareTag("Holographique")) && (_rch2d.distance < _nearestDistance))
                 {
                     _nearestDistance = _rch2d.distance;
-                    if (_rch2d.collider.gameObject.GetComponent<PlateformSpecial>() != null)
+                    if (_rch2d.collider.gameObject.GetComponent<PlatformSpecial>() != null)
                         idPlatSpe = i;
                 }
             }
 
             if (idPlatSpe >= 0 && _results[idPlatSpe].distance == _nearestDistance)
-                _results[idPlatSpe].collider.gameObject.GetComponent<PlateformSpecial>().PlayerDetected(this);
+                _results[idPlatSpe].collider.gameObject.GetComponent<PlatformSpecial>().PlayerDetected(this);
 
             if (speedY < 0 && _nearestDistance < -speedY * Time.deltaTime)
             {
