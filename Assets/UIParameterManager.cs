@@ -25,6 +25,10 @@ public class UIParameterManager : UIMenuOpenable
     {
         player.jumpSpeedXMax = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);
     }
+    public void SetDashSpeedX(string _speedStr)
+    {
+        player.dashSpeed = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);
+    }
     public void SetJumpNumber(float _nbJump)
     {
         player.SetNumberMaxJump((int)_nbJump);

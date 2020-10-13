@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float speedYMin = -10; // vitesse de chute maximum (minimum car négative)
     public float jumpSpeedYInit = 1f;    
     public float jumpSpeedXMax = 15f;
+    public float dashSpeed = 15f;
 
     [Header("Frictions and Jump Parameters")]
     public float gravity = 0.3f;
@@ -81,6 +82,11 @@ public class PlayerMovement : MonoBehaviour
             grounded = false;
             remainJump--;
         }
+    }
+
+    public void Dash(float dir){
+        //transform.position += new Vector3(dir * 10,0,0); // Téléportation
+        jumpSpeedX = dashSpeed * dir;
     }
     public void SetNumberMaxJump(int _nb)
     {
@@ -221,8 +227,8 @@ public class PlayerMovement : MonoBehaviour
     {
         moveSpeedX = ComputeSpeedWithFriction(moveSpeedX, friction);
         jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpAirFriction);
-        if (grounded)
-            jumpSpeedX = 0;
+        //if (grounded)
+        //    jumpSpeedX = 0;
         speedX = moveSpeedX + jumpSpeedX;
     }
     private float ComputeSpeedWithFriction(float _speed, float _friction)
