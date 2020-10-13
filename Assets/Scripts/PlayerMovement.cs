@@ -99,6 +99,10 @@ public class PlayerMovement : MonoBehaviour
         wind = _wind;
     }
 
+    public void Respawn(){
+        transform.position = new Vector3 (2,0,0);
+    }
+
 
 
 

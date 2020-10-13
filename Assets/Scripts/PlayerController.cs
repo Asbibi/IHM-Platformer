@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     public string horizInput = "Cont_HorizSL";
     public string jumpInput = "Cont_A";
     public string dashInput = "Cont_B";
+    public string respawnInput = "Cont_Y";
 
 
 
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour
                 playerMovement.Dash(Input.GetAxis(horizInput));
         if (Input.GetButtonDown(jumpInput) || Input.GetButtonDown("Jump"))
             playerMovement.Jump();
+        if (Input.GetButtonDown(respawnInput) || Input.GetButtonDown("Fire2"))
+            playerMovement.Respawn();
     }
 
 }
