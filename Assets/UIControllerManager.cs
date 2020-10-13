@@ -27,4 +27,8 @@ public class UIControllerManager : UIMenuOpenable
     {
         player.dashInput = controllerInputsButton[_idInput];
     }
+    public void SetRespawnInput(int _idInput)
+    {
+        player.respawnInput = controllerInputsButton[_idInput];
+    }
 }
