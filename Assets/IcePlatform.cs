@@ -2,7 +2,7 @@
 
 public class IcePlatform : PlateformSpecial
 {
-    [SerializeField] float newInertia = 0.95f;
+    [SerializeField] float newInertia = 0.97f;
     float playerInertia = -1;
 
 
