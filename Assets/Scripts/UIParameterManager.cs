@@ -4,7 +4,6 @@ using UnityEngine;
 public class UIParameterManager : UIMenuOpenable
 {
     [SerializeField] PlayerMovement player = null;
-    [SerializeField] Wind wind = null;
 
   
 
@@ -66,16 +65,5 @@ public class UIParameterManager : UIMenuOpenable
     public void SetDetectionTolerance(string _speedStr)
     {
         player.replacementTolerance = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);
-    }
-
-
-    // =============== On wind Slider Change =============== 
-    public void SetWindX(float _windForce)
-    {
-        wind.SetWindX(_windForce/5, player);
-    }
-    public void SetWindY(float _windForce)
-    {
-        wind.SetWindY(_windForce/5, player);
     }
 }
