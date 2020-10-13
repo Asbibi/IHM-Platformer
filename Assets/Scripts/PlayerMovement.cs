@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public float wallFriction = 0.1f;   // gravité appliquée lorsque le joueur est contre un mur
     public float friction = 1f;
     public float wallJumpAirFriction = 1f; // friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
+    public float inertiaCoefficientX = 0; // va de 0 à 1 ; 0 = control total et immédiat, 1 = impossible de changer la vitesse actuelle
 
     [SerializeField] private int maxNumberOfJump = 2;
     private int remainJump;
@@ -47,12 +48,12 @@ public class PlayerMovement : MonoBehaviour
         ComputeSpeedY();
         ComputeSpeedX();
         // Add wind to those speeds
-        speedX += wind.x;
-        speedY += wind.y;
+        //speedX += wind.x;
+        //speedY += wind.y;
         // Check Collisions
         CheckAllCollisions();
         // Actually move
-        transform.position += new Vector3(speedX, speedY, 0) * Time.deltaTime;
+        ApplySpeed();
     }
 
 
@@ -83,7 +84,6 @@ public class PlayerMovement : MonoBehaviour
             remainJump--;
         }
     }
-
     public void Dash(float dir){
         //transform.position += new Vector3(dir * 10,0,0); // Téléportation
         jumpSpeedX = dashSpeed * dir;
@@ -98,7 +98,17 @@ public class PlayerMovement : MonoBehaviour
     {
         wind = _wind;
     }
- 
+
+
+
+
+    // ===================== Compute Speed Methods =====================
+    private void ApplySpeed()
+    {        
+        float _spX = speedX * (1 + (wind.x * Mathf.Sign(speedX)));
+        float _spY = speedY * (1 + (wind.y * Mathf.Sign(speedY)));
+        transform.position += new Vector3(_spX, _spY, 0) * Time.deltaTime;
+    }
 
 
     // ===================== Collisions =====================
@@ -229,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
         jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpAirFriction);
         //if (grounded)
         //    jumpSpeedX = 0;
-        speedX = moveSpeedX + jumpSpeedX;
+        speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, speedX, inertiaCoefficientX);
     }
     private float ComputeSpeedWithFriction(float _speed, float _friction)
     {

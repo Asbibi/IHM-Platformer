@@ -52,6 +52,10 @@ public class UIParameterManager : UIMenuOpenable
     {
         player.wallJumpAirFriction = float.Parse(_fricStr, CultureInfo.InvariantCulture.NumberFormat);
     }
+    public void SetInertia (float _inertia)
+    {
+        player.inertiaCoefficientX = _inertia;
+    }
 
 
     // =============== Dtection Collision =============== 
