@@ -98,6 +98,10 @@ public class PlayerMovement : MonoBehaviour
     {
         wind = _wind;
     }
+    public bool GetGrounded()
+    {
+        return grounded;
+    }
 
 
 
@@ -119,20 +123,26 @@ public class PlayerMovement : MonoBehaviour
 
         #region CheckGrounded
         _nbResult = collider2d.Cast(Vector2.down, _results, maxCastDistance);
-        //Debug.Log("Results : " + _nbResult);
         if (_nbResult == 0)
             grounded = false;
         else
         {
+            int idPlatSpe = -1;
             float _nearestDistance = Mathf.Infinity;
             for (int i = 0; i < _nbResult; i++)
             {
                 RaycastHit2D _rch2d = _results[i];
                 if (_rch2d.collider != null && (_rch2d.collider.CompareTag("Solide") || _rch2d.collider.CompareTag("Holographique")) && (_rch2d.distance < _nearestDistance))
+                {
                     _nearestDistance = _rch2d.distance;
+                    if (_rch2d.collider.gameObject.GetComponent<PlateformSpecial>() != null)
+                        idPlatSpe = i;
+                }
             }
 
-            //Debug.Log("Distance : " + _nearestDistance + " <? " + -speedY*Time.deltaTime);
+            if (idPlatSpe >= 0 && _results[idPlatSpe].distance == _nearestDistance)
+                _results[idPlatSpe].collider.gameObject.GetComponent<PlateformSpecial>().PlayerDetected(this);
+
             if (speedY < 0 && _nearestDistance < -speedY * Time.deltaTime)
             {
                 // grounded :
@@ -140,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
                 speedY = 0;
                 transform.position += new Vector3(0, -_nearestDistance + replacementTolerance, 0);
                 remainJump = maxNumberOfJump;
+
             }
         }
         #endregion
