@@ -36,6 +36,9 @@ public class PlayerMovement : MonoBehaviour
     public float maxCastDistance = 0.01f;
     public float replacementTolerance = 0.01f;
 
+    [Header("Paramètre de checkpoint")]
+    public Vector3 checkPoint = new Vector3(2,0,0);
+
 
     // ===================== Unity Methods =====================
     private void Start()
@@ -100,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void Respawn(){
-        transform.position = new Vector3 (2,0,0);
+        transform.position = checkPoint;
     }
 
 
