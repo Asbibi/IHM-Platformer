@@ -10,6 +10,16 @@ public class PlatformBounce : PlatformSpecial
     float speedToBounce = 0;
 
 
+
+    public void SetBounceMulitplier(float _coeff)
+    {
+        speedBounceMultiplier = _coeff;
+    }
+    public void SetSpeedNull(float _speed)
+    {
+        speedIfNull = _speed;
+    }
+
     protected override void OnPlayerDetection(PlayerMovement _player)
     {
         if (!bouncing)

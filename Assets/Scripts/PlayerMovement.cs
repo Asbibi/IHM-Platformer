@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private float sizeX;
+
     [Header("Speeds and Forces")]
     private float speedX;
     private float moveSpeedX;
@@ -44,19 +46,18 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         collider2d = GetComponent<BoxCollider2D>();
+        sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;
     }
     void Update()
     {
-        // Compute speeds
+        // Move on Y axis
         ComputeSpeedY();
+        CheckCollisionsY();
+        ApplySpeedY();
+        // Move on X axis
         ComputeSpeedX();
-        // Add wind to those speeds
-        //speedX += wind.x;
-        //speedY += wind.y;
-        // Check Collisions
-        CheckAllCollisions();
-        // Actually move
-        ApplySpeed();
+        CheckCollisionsX();
+        ApplySpeedX();
     }
 
 
@@ -120,16 +121,94 @@ public class PlayerMovement : MonoBehaviour
 
 
     // ===================== Compute Speed Methods =====================
-    private void ApplySpeed()
+    private void ApplySpeedX()
     {        
         float _spX = speedX * (1 + (wind.x * Mathf.Sign(speedX)));
+        transform.position += Vector3.right * _spX * Time.deltaTime;
+    }
+    private void ApplySpeedY()
+    {
         float _spY = speedY * (1 + (wind.y * Mathf.Sign(speedY)));
-        transform.position += new Vector3(_spX, _spY, 0) * Time.deltaTime;
+        transform.position += Vector3.up * _spY * Time.deltaTime;
     }
 
 
     // ===================== Collisions =====================
-    private void CheckAllCollisions()
+    private void CheckCollisionsX()
+    {
+        RaycastHit2D[] _results = new RaycastHit2D[5];
+        int _nbResult;
+        
+        float _nearestDistanceRight = Mathf.Infinity;
+        float _nearestDistanceLeft = Mathf.Infinity;
+
+        #region CheckWallRight
+        _nbResult = collider2d.Cast(Vector2.right, _results, maxCastDistance);
+        if (_nbResult == 0)
+            rightWalled = false;
+        else
+        {
+            for (int i = 0; i < _nbResult; i++)
+            {
+                RaycastHit2D _rch2d = _results[i];
+                if (_rch2d.collider != null && _rch2d.collider.CompareTag("Solide") && (_rch2d.distance < _nearestDistanceRight))
+                    _nearestDistanceRight = _rch2d.distance;
+            }
+
+            if (speedX > 0 && _nearestDistanceRight < speedX * Time.deltaTime)
+            {
+                rightWalled = true;
+            }
+        }
+        #endregion
+
+        #region CheckWallLeft
+        _nbResult = collider2d.Cast(Vector2.left, _results, maxCastDistance);
+        if (_nbResult == 0)
+            leftWalled = false;
+        else
+        {            
+            for (int i = 0; i < _nbResult; i++)
+            {
+                RaycastHit2D _rch2d = _results[i];
+                if (_rch2d.collider != null && _rch2d.collider.CompareTag("Solide") && (_rch2d.distance < _nearestDistanceLeft))
+                    _nearestDistanceLeft = _rch2d.distance;
+            }
+
+            if (speedX < 0 && _nearestDistanceLeft < -speedX * Time.deltaTime)
+            {
+                leftWalled = true;
+            }
+        }
+        #endregion
+
+        #region SecurityRightLeft
+        if(rightWalled && leftWalled)
+        {
+            Debug.LogWarning("Would had been Blocked !");
+            if (Physics2D.Raycast(transform.position + Vector3.right * sizeX, Vector2.right, maxCastDistance) != null)
+                leftWalled = false;
+            else
+                rightWalled = false;
+        }
+        #endregion
+
+        #region ApplyWalled
+        if (rightWalled && speedX > 0)
+        {
+            speedX = 0;
+            jumpSpeedX = 0;
+            transform.position += new Vector3(_nearestDistanceRight - replacementTolerance, 0, 0);
+        }
+        else if (leftWalled && speedX < 0)
+        {
+            speedX = 0;
+            jumpSpeedX = 0;
+            transform.position += new Vector3(replacementTolerance - _nearestDistanceLeft, 0, 0);
+        }
+        #endregion
+    }
+    private void CheckCollisionsY()
     {
         RaycastHit2D[] _results = new RaycastHit2D[5];
         int _nbResult;
@@ -189,74 +268,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         #endregion
-
-        #region CheckWallRight
-        _nbResult = collider2d.Cast(Vector2.right, _results, maxCastDistance);
-        if (_nbResult == 0)
-            rightWalled = false;
-        else
-        {
-            float _nearestDistance = Mathf.Infinity;
-            for (int i = 0; i < _nbResult; i++)
-            {
-                RaycastHit2D _rch2d = _results[i];
-                if (_rch2d.collider != null && _rch2d.collider.CompareTag("Solide") && (_rch2d.distance < _nearestDistance))
-                    _nearestDistance = _rch2d.distance;
-            }
-
-            if (speedX > 0 && _nearestDistance < speedX * Time.deltaTime)
-            {
-                rightWalled = true;
-                speedX = 0;
-                jumpSpeedX = 0;
-                transform.position += new Vector3(_nearestDistance - replacementTolerance, 0, 0);
-            }
-        }
-        #endregion
-
-        #region CheckWallLeft
-        _nbResult = collider2d.Cast(Vector2.left, _results, maxCastDistance);
-        if (_nbResult == 0)
-            leftWalled = false;
-        else
-        {
-            float _nearestDistance = Mathf.Infinity;
-            for (int i = 0; i < _nbResult; i++)
-            {
-                RaycastHit2D _rch2d = _results[i];
-                if (_rch2d.collider != null && _rch2d.collider.CompareTag("Solide") && (_rch2d.distance < _nearestDistance))
-                    _nearestDistance = _rch2d.distance;
-            }
-
-            if (speedX < 0 && _nearestDistance < -speedX * Time.deltaTime)
-            {
-                leftWalled = true;
-                speedX = 0;
-                jumpSpeedX = 0;
-                transform.position += new Vector3(replacementTolerance - _nearestDistance, 0, 0);
-            }
-        }
-        #endregion
-
     }
 
 
     // ===================== Compute Speed Methods =====================
-    private void ComputeSpeedY()
-    {
-        if (grounded)
-            speedY = 0;
-        else
-        {
-            if(speedY > speedYMin)
-            {
-                if((leftWalled || rightWalled) && (speedY <= 0))
-                    speedY -= wallFriction;
-                else
-                    speedY -= gravity;
-            }
-        }
-    }
     private void ComputeSpeedX()
     {
         moveSpeedX = ComputeSpeedWithFriction(moveSpeedX, friction);
@@ -264,6 +279,21 @@ public class PlayerMovement : MonoBehaviour
         //if (grounded)
         //    jumpSpeedX = 0;
         speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, speedX, inertiaCoefficientX);
+    }
+    private void ComputeSpeedY()
+    {
+        if (grounded)
+            speedY = 0;
+        else
+        {
+            if (speedY > speedYMin)
+            {
+                if ((leftWalled || rightWalled) && (speedY <= 0))
+                    speedY -= wallFriction;
+                else
+                    speedY -= gravity;
+            }
+        }
     }
     private float ComputeSpeedWithFriction(float _speed, float _friction)
     {

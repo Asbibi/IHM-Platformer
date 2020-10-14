@@ -6,6 +6,11 @@ public class PlatformIce : PlatformSpecial
     float playerInertia = -1;
 
 
+    public void SetInertia(float _inertia)
+    {
+        newInertia = _inertia;
+    }
+
     protected override void OnPlayerDetection(PlayerMovement _player)
     {
         base.OnPlayerDetection(_player);
