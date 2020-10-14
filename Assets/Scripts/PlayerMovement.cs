@@ -186,8 +186,12 @@ public class PlayerMovement : MonoBehaviour
         if(rightWalled && leftWalled)
         {
             Debug.LogWarning("Would had been Blocked !");
-            if (Physics2D.Raycast(transform.position + Vector3.right * sizeX, Vector2.right, maxCastDistance) != null)
+            RaycastHit2D rch = Physics2D.Raycast(transform.position + Vector3.right * sizeX, Vector2.right, maxCastDistance);
+            if (rch.collider != null)
+            {
+                Debug.Log(rch.collider.name);
                 leftWalled = false;
+            }
             else
                 rightWalled = false;
         }
