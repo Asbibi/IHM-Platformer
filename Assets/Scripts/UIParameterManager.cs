@@ -58,10 +58,6 @@ public class UIParameterManager : UIMenuOpenable
 
 
     // =============== Dtection Collision =============== 
-    public void SetRaycastDistance(float _dist)
-    {
-        player.maxCastDistance = _dist;
-    }
     public void SetDetectionTolerance(string _speedStr)
     {
         player.replacementTolerance = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);

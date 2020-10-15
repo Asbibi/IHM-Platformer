@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private Collider2D collider2d;
     private float sizeX;
 
     [Header("Speeds and Forces")]
@@ -28,14 +29,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int maxNumberOfJump = 2;
     private int remainJump;
 
-    private Collider2D collider2d;
-
+    private float lastNearestDistanceGrounded;
     private bool grounded;
     private bool rightWalled;
     private bool leftWalled;
 
     [Header("Paramètres de détection des collisions")]
-    public float maxCastDistance = 0.01f;
     public float replacementTolerance = 0.01f;
 
     [Header("Paramètre de checkpoint")]
@@ -150,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
         float _nearestDistanceLeft = Mathf.Infinity;
 
         #region CheckWallRight
-        _nbResult = collider2d.Cast(Vector2.right, _results, maxCastDistance);
+        _nbResult = collider2d.Cast(Vector2.right, _results, Mathf.Abs(speedX) * Time.deltaTime + replacementTolerance);
         if (_nbResult == 0)
             rightWalled = false;
         else
@@ -170,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         #region CheckWallLeft
-        _nbResult = collider2d.Cast(Vector2.left, _results, maxCastDistance);
+        _nbResult = collider2d.Cast(Vector2.left, _results, Mathf.Abs(speedX) * Time.deltaTime + replacementTolerance);
         if (_nbResult == 0)
             leftWalled = false;
         else
@@ -193,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
         if(rightWalled && leftWalled)
         {
             Debug.LogWarning("Would had been Blocked !");
-            RaycastHit2D rch = Physics2D.Raycast(transform.position + Vector3.right * sizeX, Vector2.right, maxCastDistance);
+            RaycastHit2D rch = Physics2D.Raycast(transform.position + Vector3.right * sizeX, Vector2.right, replacementTolerance*2);
             if (rch.collider != null)
             {
                 Debug.Log(rch.collider.name);
@@ -225,7 +224,7 @@ public class PlayerMovement : MonoBehaviour
         int _nbResult;
 
         #region CheckGrounded
-        _nbResult = collider2d.Cast(Vector2.down, _results, maxCastDistance);
+        _nbResult = collider2d.Cast(Vector2.down, _results, Mathf.Abs(speedY) * Time.deltaTime + replacementTolerance);
         if (_nbResult == 0)
             grounded = false;
         else
@@ -243,8 +242,12 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
+
+            // On regarde si on est sur une plateforme spéciale
             if (idPlatSpe >= 0 && _results[idPlatSpe].distance == _nearestDistance)
                 _results[idPlatSpe].collider.gameObject.GetComponent<PlatformSpecial>().PlayerDetected(this);
+
+
 
             if (speedY < 0 && _nearestDistance < -speedY * Time.deltaTime)
             {
@@ -253,13 +256,15 @@ public class PlayerMovement : MonoBehaviour
                 speedY = 0;
                 transform.position += new Vector3(0, -_nearestDistance + replacementTolerance, 0);
                 remainJump = maxNumberOfJump;
-
+                lastNearestDistanceGrounded = _nearestDistance;
             }
+            else if (grounded && _nearestDistance > lastNearestDistanceGrounded + replacementTolerance)
+                grounded = false;
         }
         #endregion
 
         #region CheckCeilling
-        _nbResult = collider2d.Cast(Vector2.up, _results, maxCastDistance);
+        _nbResult = collider2d.Cast(Vector2.up, _results, Mathf.Abs(speedY) * Time.deltaTime + replacementTolerance);
         //Debug.Log("Results : " + _nbResult);
         if (_nbResult != 0)
         {

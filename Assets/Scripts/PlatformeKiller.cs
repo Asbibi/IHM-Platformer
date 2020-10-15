@@ -15,4 +15,9 @@ public class PlatformeKiller : PlatformSpecial
         if(_player.GetRealY(true) < transform.position.y + height + toleranceHeight)
             _player.Respawn();
     }
+
+    public void SetTolerance(float _tolerance)
+    {
+        toleranceHeight = _tolerance;
+    }
 }

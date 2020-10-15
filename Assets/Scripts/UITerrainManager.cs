@@ -7,6 +7,7 @@ public class UITerrainManager : UIMenuOpenable
     [SerializeField] Wind wind = null;
     [SerializeField] PlatformIce platformIce = null;
     [SerializeField] PlatformBounce platformBounce = null;
+    [SerializeField] PlatformeKiller platformKiller = null;
 
     // =============== On wind Slider Change =============== 
     public void SetWindX(float _windForce)
@@ -31,6 +32,9 @@ public class UITerrainManager : UIMenuOpenable
     {
         platformBounce.SetSpeedNull(float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat));
     }
-
-
+    
+    public void SetKillerTolerance(string _tolerancedStr)
+    {
+        platformKiller.SetTolerance(float.Parse(_tolerancedStr, CultureInfo.InvariantCulture.NumberFormat));
+    }
 }

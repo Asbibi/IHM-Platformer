@@ -1,15 +1,19 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlatformMobile : PlatformSpecial
 {
+    private float height;
+    [SerializeField] private float tolerance = 0;
+
+    [Header("Mouvement Parameters")]
     [SerializeField] private Vector3 translationVector = Vector3.up * 0.01f;
     [SerializeField] private float delayUturn = 5f;
-    bool direction = true;  // true : on va dans le sens du vecteur, false : on va dans l'autre
+    private bool direction = true;  // true : on va dans le sens du vecteur, false : on va dans l'autre
 
     private void Start()
     {
+        height = GetComponent<SpriteRenderer>().bounds.extents.y;
         StartCoroutine(UTurn());
     }
 
@@ -37,12 +41,13 @@ public class PlatformMobile : PlatformSpecial
     }
 
 
-    /*
+    
     protected override void OnPlayerDetection(PlayerMovement _player)
     {
+        if (_player.GetRealY(true) > transform.position.y + height - tolerance)
         base.OnPlayerDetection(_player);
         
-    }
+    }/*
     protected override void OnPlayerLeave()
     {
         
