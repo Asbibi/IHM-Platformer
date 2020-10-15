@@ -29,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int maxNumberOfJump = 2;
     private int remainJump;
 
-    private float lastNearestDistanceGrounded;
     private bool grounded;
     private bool rightWalled;
     private bool leftWalled;
@@ -256,10 +255,7 @@ public class PlayerMovement : MonoBehaviour
                 speedY = 0;
                 transform.position += new Vector3(0, -_nearestDistance + replacementTolerance, 0);
                 remainJump = maxNumberOfJump;
-                lastNearestDistanceGrounded = _nearestDistance;
             }
-            else if (grounded && _nearestDistance > lastNearestDistanceGrounded + replacementTolerance)
-                grounded = false;
         }
         #endregion
 
