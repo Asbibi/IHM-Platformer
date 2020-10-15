@@ -112,6 +112,13 @@ public class PlayerMovement : MonoBehaviour
     {
         return grounded;
     }
+    public float GetRealY(bool withTolerance = false)
+    {
+        if (withTolerance)
+            return transform.position.y - sizeX - replacementTolerance;
+        else
+            return transform.position.y - sizeX;
+    }
 
     public void Respawn(){
         transform.position = checkPoint;
