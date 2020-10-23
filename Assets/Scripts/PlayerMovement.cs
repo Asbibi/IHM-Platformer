@@ -45,8 +45,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject smokeTrail = null;
     [SerializeField] Vector3 groundSmokeOffset = Vector3.zero;
     [SerializeField] Vector3 wallSmokeOffset = Vector3.zero;    // for right wall
-    [SerializeField] int frameSpaceBetweenTrails = 5;
-    int delayBeforeTrail = 0;
+    [SerializeField] float frameSpaceBetweenTrails = 0.03f;
+    float delayBeforeTrail = 0;
 
 
     // ===================== Unity Methods =====================
@@ -357,6 +357,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         else
-            delayBeforeTrail--;
+            delayBeforeTrail -= Time.deltaTime;
     }
 }

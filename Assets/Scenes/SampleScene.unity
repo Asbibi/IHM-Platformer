@@ -6302,7 +6302,7 @@ MonoBehaviour:
     type: 3}
   groundSmokeOffset: {x: 0, y: -0.3, z: 0}
   wallSmokeOffset: {x: 0.3, y: 0, z: 0}
-  frameSpaceBetweenTrails: 3
+  frameSpaceBetweenTrails: 0.03
 --- !u!50 &857834586
 Rigidbody2D:
   serializedVersion: 4
