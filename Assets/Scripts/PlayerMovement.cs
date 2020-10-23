@@ -39,6 +39,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Paramètre de checkpoint")]
     public Vector3 checkPoint = new Vector3(2,0,0);
 
+    [Header("Trail parameters")]
+    public bool showTrails = true;
+    [SerializeField] GameObject playerTrail = null;
+    [SerializeField] GameObject smokeTrail = null;
+    [SerializeField] Vector3 groundSmokeOffset = Vector3.zero;
+    [SerializeField] Vector3 wallSmokeOffset = Vector3.zero;    // for right wall
+    [SerializeField] int frameSpaceBetweenTrails = 5;
+    int delayBeforeTrail = 0;
+
 
     // ===================== Unity Methods =====================
     private void Start()
@@ -56,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
         ComputeSpeedX();
         CheckCollisionsX();
         ApplySpeedX();
+        if (showTrails)
+            AddTrails();
     }
 
 
@@ -322,5 +333,30 @@ public class PlayerMovement : MonoBehaviour
                 _speed = 0;
         }
         return _speed;
+    }
+
+    // ===================== Collisions =====================
+    private void AddTrails(){
+        if (delayBeforeTrail <= 0){
+            if (Mathf.Abs(speedX) > dashSpeed*0.9f){  // if dash
+                Instantiate(playerTrail, transform.position, transform.rotation);
+                delayBeforeTrail = frameSpaceBetweenTrails;
+            }
+
+            if (grounded && Mathf.Abs(speedX) > speedXMax*0.66f){    // walking fast
+                Instantiate(smokeTrail, transform.position + groundSmokeOffset, transform.rotation);
+                delayBeforeTrail = frameSpaceBetweenTrails;
+            }
+            else if (rightWalled && speedY < 0){    // falling against wall on left side  
+                Instantiate(smokeTrail, transform.position + wallSmokeOffset, transform.rotation);
+                delayBeforeTrail = frameSpaceBetweenTrails;
+            }
+            else if (leftWalled && speedY < 0){   // falling against wall on left side
+                Instantiate(smokeTrail, transform.position - wallSmokeOffset, transform.rotation);
+                delayBeforeTrail = frameSpaceBetweenTrails;
+            }
+        }
+        else
+            delayBeforeTrail--;
     }
 }

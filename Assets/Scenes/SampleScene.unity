@@ -6243,7 +6243,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 73021ae0975872f43b6330ad48956be3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6295,6 +6295,14 @@ MonoBehaviour:
   maxNumberOfJump: 2
   replacementTolerance: 0.01
   checkPoint: {x: 2, y: 0, z: 0}
+  showTrails: 1
+  playerTrail: {fileID: 6076549005785307077, guid: afca9566d8799a64985c9dedc8f1f5ed,
+    type: 3}
+  smokeTrail: {fileID: 6113243329214009244, guid: 71bcaffb3d7cd154a8c8f2dc482f854f,
+    type: 3}
+  groundSmokeOffset: {x: 0, y: -0.3, z: 0}
+  wallSmokeOffset: {x: 0.3, y: 0, z: 0}
+  frameSpaceBetweenTrails: 3
 --- !u!50 &857834586
 Rigidbody2D:
   serializedVersion: 4
