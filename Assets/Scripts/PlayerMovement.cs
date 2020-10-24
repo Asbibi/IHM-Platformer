@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Collider2D collider2d;
-    private float sizeX;
+    private float sizeX;    
+    private float sizeY;
 
     [Header("Speeds and Forces")]
     private float speedX;
@@ -53,7 +54,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         collider2d = GetComponent<BoxCollider2D>();
-        sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;
+        sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;        
+        sizeY = GetComponent<SpriteRenderer>().bounds.extents.y;
     }
     void Update()
     {
@@ -124,9 +126,9 @@ public class PlayerMovement : MonoBehaviour
     public float GetRealY(bool withTolerance = false)
     {
         if (withTolerance)
-            return transform.position.y - sizeX - replacementTolerance;
+            return transform.position.y - sizeY - replacementTolerance;
         else
-            return transform.position.y - sizeX;
+            return transform.position.y - sizeY;
     }
 
     public void Respawn(){
@@ -214,13 +216,13 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         #region ApplyWalled
-        if (rightWalled && speedX > 0)
+        if (rightWalled && speedX > 0 && _nearestDistanceRight != Mathf.Infinity)
         {
             speedX = 0;
             jumpSpeedX = 0;
             transform.position += new Vector3(_nearestDistanceRight - replacementTolerance, 0, 0);
         }
-        else if (leftWalled && speedX < 0)
+        else if (leftWalled && speedX < 0 && _nearestDistanceLeft != Mathf.Infinity)
         {
             speedX = 0;
             jumpSpeedX = 0;
@@ -244,7 +246,11 @@ public class PlayerMovement : MonoBehaviour
             for (int i = 0; i < _nbResult; i++)
             {
                 RaycastHit2D _rch2d = _results[i];
-                if (_rch2d.collider != null && (_rch2d.collider.CompareTag("Solide") || _rch2d.collider.CompareTag("Holographique")) && (_rch2d.distance < _nearestDistance))
+                if (_rch2d.collider != null
+                            &&(_rch2d.collider.CompareTag("Solide")
+                                || (_rch2d.collider.CompareTag("Holographique")
+                                    && (GetRealY(true) > (_rch2d.collider.transform.position.y + _rch2d.collider.GetComponent<SpriteRenderer>().bounds.extents.y/2))))
+                            && (_rch2d.distance < _nearestDistance))
                 {
                     _nearestDistance = _rch2d.distance;
                     if (_rch2d.collider.gameObject.GetComponent<PlatformSpecial>() != null)

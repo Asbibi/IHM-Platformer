@@ -7,38 +7,44 @@ public class PlatformMobile : PlatformSpecial
     [SerializeField] private float tolerance = 0;
 
     [Header("Mouvement Parameters")]
-    [SerializeField] private Vector3 translationVector = Vector3.up * 0.01f;
+    [SerializeField] private Transform pointA = null;
+    [SerializeField] private Transform pointB = null;
     [SerializeField] private float delayUturn = 5f;
     private bool direction = true;  // true : on va dans le sens du vecteur, false : on va dans l'autre
+    private float timer = 0;
 
     private void Start()
     {
         height = GetComponent<SpriteRenderer>().bounds.extents.y;
-        StartCoroutine(UTurn());
     }
 
-    private void FixedUpdate()
-    {
+    protected override void Update()
+    {        
+        base.Update();
         if (direction)
         {
-            transform.position += translationVector;
-            if (player != null)
-                player.transform.position += translationVector;
+            timer += Time.deltaTime;
+            if (timer >= delayUturn){
+                direction = false;
+                timer = delayUturn;
+            }
         }
         else
-        {
-            transform.position -= translationVector;
-            if (player != null)
-                player.transform.position -= translationVector;
+        {            
+            timer -= Time.deltaTime;
+            if (timer <= 0){
+                direction = true;
+                timer = 0;
+            }
         }
+        
+        Vector3 _oldPosition = transform.position;
+        transform.position = Vector3.Lerp(pointA.position, pointB.position, timer/delayUturn);
+
+        if (player != null)
+            player.transform.position += transform.position - _oldPosition;
     }
 
-    IEnumerator UTurn()
-    {
-        yield return new WaitForSeconds(delayUturn);
-        direction = !direction;
-        StartCoroutine(UTurn());
-    }
 
 
     
@@ -47,10 +53,5 @@ public class PlatformMobile : PlatformSpecial
         if (_player.GetRealY(true) > transform.position.y + height - tolerance)
         base.OnPlayerDetection(_player);
         
-    }/*
-    protected override void OnPlayerLeave()
-    {
-        
-        base.OnPlayerLeave();
-    }*/
+    }
 }

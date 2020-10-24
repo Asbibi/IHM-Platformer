@@ -12,7 +12,7 @@ public class PlatformSpecial : MonoBehaviour
             OnPlayerDetection(player);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (playerDetected && !player.GetGrounded())
             OnPlayerLeave();
