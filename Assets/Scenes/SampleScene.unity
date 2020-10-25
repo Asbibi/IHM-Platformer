@@ -6182,6 +6182,7 @@ GameObject:
   - component: {fileID: 857834585}
   - component: {fileID: 857834586}
   - component: {fileID: 857834587}
+  - component: {fileID: 857834588}
   m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
@@ -6303,6 +6304,7 @@ MonoBehaviour:
   groundSmokeOffset: {x: 0, y: -0.3, z: 0}
   wallSmokeOffset: {x: 0.3, y: 0, z: 0}
   frameSpaceBetweenTrails: 3
+  showJumpAnimation: 1
 --- !u!50 &857834586
 Rigidbody2D:
   serializedVersion: 4
@@ -6350,6 +6352,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!95 &857834588
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857834581}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 78f934125f9ae5045903f8f7d4f52131, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &862770457
 GameObject:
   m_ObjectHideFlags: 0

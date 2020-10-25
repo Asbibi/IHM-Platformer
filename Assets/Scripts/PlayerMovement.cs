@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Collider2D collider2d;
     private float sizeX;
+    private Animator _animator;
 
     [Header("Speeds and Forces")]
     private float speedX;
@@ -48,12 +49,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] int frameSpaceBetweenTrails = 5;
     int delayBeforeTrail = 0;
 
+    [Header("Animation parameters")]
+
+    public bool showAnimation = true;
 
     // ===================== Unity Methods =====================
     private void Start()
     {
         collider2d = GetComponent<BoxCollider2D>();
         sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;
+        _animator = GetComponent<Animator>();
     }
     void Update()
     {
@@ -67,6 +72,8 @@ public class PlayerMovement : MonoBehaviour
         ApplySpeedX();
         if (showTrails)
             AddTrails();
+        if(showAnimation)
+            HandleAnimations();
     }
 
 
@@ -358,5 +365,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else
             delayBeforeTrail--;
+    }
+
+    private void HandleAnimations(){
+        _animator.SetBool("isGrounded", grounded);
+        _animator.SetFloat("speedY", speedY); 
     }
 }
