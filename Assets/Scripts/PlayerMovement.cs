@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         collider2d = GetComponent<BoxCollider2D>();
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;        
         sizeY = GetComponent<SpriteRenderer>().bounds.extents.y;
     }
