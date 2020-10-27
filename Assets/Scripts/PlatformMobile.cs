@@ -50,7 +50,7 @@ public class PlatformMobile : PlatformSpecial
     
     protected override void OnPlayerDetection(PlayerMovement _player)
     {
-        if (_player.GetRealY(true) > transform.position.y + height - tolerance)
+        if (_player.GetRealY(false) > transform.position.y + height - tolerance)
         base.OnPlayerDetection(_player);
         
     }

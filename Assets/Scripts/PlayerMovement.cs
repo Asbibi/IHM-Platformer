@@ -309,8 +309,8 @@ public class PlayerMovement : MonoBehaviour
     {
         moveSpeedX = ComputeSpeedWithFriction(moveSpeedX, friction);
         jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpAirFriction);
-        //if (grounded)
-        //    jumpSpeedX = 0;
+        if (grounded && (moveSpeedX == 0 || Mathf.Sign(moveSpeedX) != Mathf.Sign(jumpSpeedX)))
+            jumpSpeedX = 0;
         speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, speedX, inertiaCoefficientX);
     }
     private void ComputeSpeedY()

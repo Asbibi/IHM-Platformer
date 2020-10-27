@@ -6,6 +6,11 @@ public class PlatformIce : PlatformSpecial
     float playerInertia = -1;
 
 
+    private void Start()
+    {
+        newInertia = PlayerPrefs.GetFloat("IceInertia");
+    }
+
     public void SetInertia(float _inertia)
     {
         newInertia = _inertia;

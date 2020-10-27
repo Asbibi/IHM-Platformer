@@ -11,6 +11,13 @@ public class PlatformBounce : PlatformSpecial
 
 
 
+    private void Start()
+    {
+        speedBounceMultiplier = PlayerPrefs.GetFloat("SlimeSpeedMultiplier");
+        speedIfNull = PlayerPrefs.GetFloat("SlimeNullSpeed");
+    }
+
+
     public void SetBounceMulitplier(float _coeff)
     {
         speedBounceMultiplier = _coeff;
