@@ -4,8 +4,14 @@ using UnityEngine;
 public class UIParameterManager : UIMenuOpenable
 {
     [SerializeField] PlayerMovement player = null;
+    [SerializeField] SettingsManager settingsManager = null;
 
-  
+    protected override void Start()
+    {
+        base.Start();
+        settingsManager.LoadParameter();
+    }
+
 
     // =============== Move Parameter Player =============== 
     public void SetMaxSpeedX(string _speedStr)
@@ -28,6 +34,28 @@ public class UIParameterManager : UIMenuOpenable
     {
         player.dashSpeed = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);
     }
+
+    public void SetMaxSpeedX(float _speedFlt)
+    {
+        player.speedXMax = _speedFlt;
+    }
+    public void SetMinSpeedY(float _speedFlt)
+    {
+        player.speedYMin = -_speedFlt;
+    }
+    public void SetJumpSpeed(float _speedFlt)
+    {
+        player.jumpSpeedYInit = _speedFlt;
+    }
+    public void SetJumpWallSpeedX(float _speedFlt)
+    {
+        player.jumpSpeedXMax = _speedFlt;
+    }
+    public void SetDashSpeedX(float _speedFlt)
+    {
+        player.dashSpeed = _speedFlt;
+    }
+
     public void SetJumpNumber(float _nbJump)
     {
         player.SetNumberMaxJump((int)_nbJump);
@@ -51,6 +79,24 @@ public class UIParameterManager : UIMenuOpenable
     {
         player.wallJumpAirFriction = float.Parse(_fricStr, CultureInfo.InvariantCulture.NumberFormat);
     }
+
+    public void SetFrictionX(float _fricFlt)
+    {
+        player.friction = _fricFlt;
+    }
+    public void SetGravity(float _gravFlt)
+    {
+        player.gravity = _gravFlt;
+    }
+    public void SetWallFriction(float _fricFlt)
+    {
+        player.wallFriction = _fricFlt;
+    }
+    public void SetWallJumpAirFriction(float _fricFlt)
+    {
+        player.wallJumpAirFriction = _fricFlt;
+    }
+
     public void SetInertia (float _inertia)
     {
         player.inertiaCoefficientX = _inertia;
@@ -58,8 +104,12 @@ public class UIParameterManager : UIMenuOpenable
 
 
     // =============== Dtection Collision =============== 
-    public void SetDetectionTolerance(string _speedStr)
+    public void SetDetectionTolerance(string _toleranceStr)
     {
-        player.replacementTolerance = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);
+        player.replacementTolerance = float.Parse(_toleranceStr, CultureInfo.InvariantCulture.NumberFormat);
+    }
+    public void SetDetectionTolerance(float _toleranceFlt)
+    {
+        player.replacementTolerance = _toleranceFlt;
     }
 }

@@ -5,7 +5,7 @@ public class UIMenuOpenable : MonoBehaviour
     private bool menuOpen = false;
     Animator animator;
 
-    private void Start()
+    protected virtual void Start()
     {
         animator = GetComponent<Animator>();
     }

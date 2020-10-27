@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown(jumpInput) || Input.GetButtonDown("Jump"))
             playerMovement.Jump();
         if (Input.GetButtonDown(respawnInput) || Input.GetButtonDown("Fire2"))
-            playerMovement.Respawn();
+            GameManager.RespawnPlayer();
     }
 
 }

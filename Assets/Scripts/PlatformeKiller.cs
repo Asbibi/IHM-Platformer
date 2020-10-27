@@ -12,8 +12,8 @@ public class PlatformeKiller : PlatformSpecial
 
     protected override void OnPlayerDetection(PlayerMovement _player)
     {
-        if(_player.GetRealY(true) < transform.position.y + height + toleranceHeight)
-            _player.Respawn();
+        if (_player.GetRealY(true) < transform.position.y + height + toleranceHeight)
+            GameManager.RespawnPlayer();
     }
 
     public void SetTolerance(float _tolerance)

@@ -38,8 +38,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Paramètres de détection des collisions")]
     public float replacementTolerance = 0.01f;
 
-    [Header("Paramètre de checkpoint")]
-    public Vector3 checkPoint = new Vector3(2,0,0);
+
 
     [Header("Trail parameters")]
     public bool showTrails = true;
@@ -138,9 +137,7 @@ public class PlayerMovement : MonoBehaviour
             return transform.position.y - sizeY;
     }
 
-    public void Respawn(){
-        transform.position = checkPoint;
-    }
+
 
 
 

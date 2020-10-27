@@ -3,6 +3,7 @@
 public class UIControllerManager : UIMenuOpenable
 {
     [SerializeField] PlayerController player = null;
+    [SerializeField] SettingsManager settingsManager = null;
     private string[] controllerInputsAxis = {"Cont_HorizSL",
                                                 "Cont_HorizDPad",
                                                 "Cont_HorizSR"};
@@ -14,6 +15,13 @@ public class UIControllerManager : UIMenuOpenable
                                                 "Cont_LB",
                                                 "Cont_RT",
                                                 "Cont_LT"};
+
+
+    protected override void Start()
+    {
+        base.Start();
+        settingsManager.LoadInput();
+    }
 
     public void SetHorizInput(int _idInput)
     {
