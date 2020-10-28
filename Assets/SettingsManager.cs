@@ -60,7 +60,19 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private float defaultPicDetection = 0.1f;
 
 
-
+    private void Start()
+    {
+        if (PlayerPrefs.GetInt("PlayerPrefCreated") == 0)
+        {
+            RestoreDefaultInput();
+            RestoreDefaultParameter();
+            RestoreDefaultTerrain();
+            SaveInput();
+            SaveParameter();
+            SaveTerrain();
+            PlayerPrefs.SetInt("PlayerPrefCreated", 1);
+        }
+    }
 
     // ==========================================================
     #region ==================== Parameter Settings =========================
