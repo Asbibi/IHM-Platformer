@@ -5,6 +5,9 @@ using System.Globalization;
 public class SettingsManager : MonoBehaviour
 {
     [Header("Settings")]
+    [SerializeField] private Toggle AudioFeedBack = null;
+    [SerializeField] private Toggle VisualFeedBack = null;
+    //---------------------------------------------
     [SerializeField] private UIParameterManager ParameterManager = null;
     [SerializeField] private InputField SpeedXMax = null;
     [SerializeField] private InputField SpeedYMin = null;
@@ -20,7 +23,10 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Slider Inertia = null;
     //---------------------------------------------
     [SerializeField] private InputField ToleranceReplacement = null;
-
+    
+    [SerializeField] private bool defaultAudioFeedBack = false;
+    [SerializeField] private bool defaultVisualFeedBack = true;
+    //---------------------------------------------
     [SerializeField] private float defaultSpeedXMax = 7;
     [SerializeField] private float defaultSpeedYMin = 15;
     [SerializeField] private float defaultSpeedJump = 15;
@@ -79,6 +85,11 @@ public class SettingsManager : MonoBehaviour
 
     public void RestoreDefaultParameter()
     {
+        AudioFeedBack.isOn = defaultAudioFeedBack;
+        ParameterManager.SetAudioFeedBack(defaultAudioFeedBack);
+        VisualFeedBack.isOn = defaultVisualFeedBack;
+        ParameterManager.SetVisualFeedBack(defaultVisualFeedBack);
+
         SpeedXMax.text = defaultSpeedXMax.ToString(CultureInfo.InvariantCulture.NumberFormat);
         ParameterManager.SetMaxSpeedX(defaultSpeedXMax);
         SpeedYMin.text = defaultSpeedYMin.ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -108,6 +119,11 @@ public class SettingsManager : MonoBehaviour
     }
     public void LoadParameter()
     {
+        AudioFeedBack.isOn = PlayerPrefs.GetInt("AudioFeedBack") != 0;
+        ParameterManager.SetAudioFeedBack(PlayerPrefs.GetInt("AudioFeedBack") != 0);
+        VisualFeedBack.isOn = PlayerPrefs.GetInt("VisualFeedBack") != 0; ;
+        ParameterManager.SetVisualFeedBack(PlayerPrefs.GetInt("VisualFeedBack") != 0);
+
         SpeedXMax.text = PlayerPrefs.GetFloat("SpeedXMax").ToString(CultureInfo.InvariantCulture.NumberFormat);
         ParameterManager.SetMaxSpeedX(PlayerPrefs.GetFloat("SpeedXMax"));
         SpeedYMin.text = PlayerPrefs.GetFloat("SpeedYMin").ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -137,6 +153,8 @@ public class SettingsManager : MonoBehaviour
     }
     public void SaveParameter()
     {
+        PlayerPrefs.SetInt("AudioFeedBack", AudioFeedBack.isOn ? 1 : 0);
+        PlayerPrefs.SetInt("VisualFeedBack", VisualFeedBack.isOn ? 1 : 0);
         PlayerPrefs.SetFloat("SpeedXMax", float.Parse(SpeedXMax.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("SpeedYMin", float.Parse(SpeedYMin.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("SpeedJump", float.Parse(SpeedJump.text, CultureInfo.InvariantCulture.NumberFormat));

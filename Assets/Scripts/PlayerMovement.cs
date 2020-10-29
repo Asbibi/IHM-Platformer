@@ -40,8 +40,8 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    [Header("Trail parameters")]
-    public bool showTrails = true;
+    [Header("FeedBack parameters")]
+    bool showVisualFeedBack = true;
     [SerializeField] GameObject playerTrail = null;
     [SerializeField] GameObject smokeTrail = null;
     [SerializeField] Vector3 groundSmokeOffset = Vector3.zero;
@@ -49,9 +49,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float frameSpaceBetweenTrails = 0.03f;
     float delayBeforeTrail = 0;
 
-    [Header("Animation parameters")]
-
-    public bool showAnimation = true;
 
     // ===================== Unity Methods =====================
     private void Start()
@@ -71,10 +68,11 @@ public class PlayerMovement : MonoBehaviour
         ComputeSpeedX();
         CheckCollisionsX();
         ApplySpeedX();
-        if (showTrails)
+        if (showVisualFeedBack)
+        {
             AddTrails();
-        if(showAnimation)
             HandleAnimations();
+        }
     }
 
 
@@ -114,6 +112,8 @@ public class PlayerMovement : MonoBehaviour
     public void Dash(float dir){
         //transform.position += new Vector3(dir * 10,0,0); // Téléportation
         jumpSpeedX = dashSpeed * dir;
+        if (showVisualFeedBack && Mathf.Abs(dir) > 0.2f)
+            GameManager.ShakeScreen(0.1f, 0.2f);
     }
     public void SetNumberMaxJump(int _nb)
     {
@@ -135,6 +135,10 @@ public class PlayerMovement : MonoBehaviour
             return transform.position.y - sizeY - replacementTolerance;
         else
             return transform.position.y - sizeY;
+    }
+    public void UpdateShowVisualFeedBack()
+    {
+        showVisualFeedBack = GameManager.GetVisualFeedBack();
     }
 
 

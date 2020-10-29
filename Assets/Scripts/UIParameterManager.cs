@@ -13,6 +13,16 @@ public class UIParameterManager : UIMenuOpenable
     }
 
 
+    // =============== Feedbacks Parameters ===============
+    public void SetAudioFeedBack(bool _vfb)
+    {
+        // TODO ===========================================
+    }
+    public void SetVisualFeedBack(bool _vfb)
+    {
+        GameManager.SetVisualFeedBack(_vfb);
+    }
+
     // =============== Move Parameter Player =============== 
     public void SetMaxSpeedX(string _speedStr)
     {
