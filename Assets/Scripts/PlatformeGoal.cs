@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlatformeGoal : PlatformSpecial
 {
@@ -16,7 +15,7 @@ public class PlatformeGoal : PlatformSpecial
     protected override void OnPlayerDetection(PlayerMovement _player)
     {
         if (_player.GetRealY(true) < transform.position.y + height + toleranceHeight)
-            SceneManager.LoadScene(idNextScene);
+            GameManager.LoadScene(idNextScene);
     }
 
     public void SetTolerance(float _tolerance)

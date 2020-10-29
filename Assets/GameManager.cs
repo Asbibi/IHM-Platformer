@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
     [SerializeField] GameObject player = null;
+    [SerializeField] UICircleTransition circleTranstion = null;
+    [SerializeField] EventSystem eventSystem = null;
     ScreenShake ScreenShake = null;
     Vector3 spawnPosition = Vector3.right*2;
 
     bool visualFeedBacks = true;
+    bool loadingNextScene = false;
 
     private void Awake()
     {
@@ -25,6 +30,8 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             DontDestroyOnLoad(player);
+            DontDestroyOnLoad(circleTranstion.transform.root.gameObject);
+            DontDestroyOnLoad(eventSystem.gameObject);
             visualFeedBacks = PlayerPrefs.GetInt("VisualFeedBack") != 0;
             player.GetComponent<PlayerMovement>().UpdateShowVisualFeedBack();
         }
@@ -32,6 +39,44 @@ public class GameManager : MonoBehaviour
 
 
 
+    public static void LoadScene(int i)
+    {
+        if (instance != null)
+        {
+            if (!instance.loadingNextScene)
+                instance.StartCoroutine(instance.LoadSceneCoroutine(i));
+        }
+        else
+            Debug.LogError("Try accessing null GameManager instance at LoadScene(int i)");
+    }
+    IEnumerator LoadSceneCoroutine(int i)
+    {
+        loadingNextScene = true;
+        Vector3 _circlePositionStart = Camera.current.WorldToScreenPoint(player.transform.position);
+        _circlePositionStart.z = 0;
+        circleTranstion.transform.position = _circlePositionStart;
+        circleTranstion.PlayTransition();
+        
+        yield return new WaitForSeconds(circleTranstion.startDuration);
+
+        Debug.Log("End of transition");
+        SceneManager.LoadScene(i);
+        yield return null;
+        circleTranstion.gameObject.SetActive(false);
+        //yield return null;
+        circleTranstion.gameObject.SetActive(true);
+        circleTranstion.ForceInMiddleOfTransition();
+
+        yield return null;
+
+        _circlePositionStart = Camera.current.WorldToScreenPoint(spawnPosition);
+        _circlePositionStart.z = 0;
+        circleTranstion.transform.position = _circlePositionStart;
+        circleTranstion.PlayTransition();
+
+        yield return new WaitForSeconds(circleTranstion.endDuration);
+        loadingNextScene = false;
+    }
     
     public static bool GetVisualFeedBack()
     {
