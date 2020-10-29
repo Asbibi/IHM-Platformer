@@ -21,12 +21,14 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0)
             playerMovement.MoveX(Input.GetAxis("Horizontal"));
-            if(Input.GetButtonDown(dashInput) || Input.GetButtonDown("Fire1"))
+            if(Input.GetButtonDown("Fire1"))
                 playerMovement.Dash(Input.GetAxis("Horizontal"));
+
         else if (Input.GetAxis(horizInput) !=0)
             playerMovement.MoveX(Input.GetAxis(horizInput));
-            if(Input.GetButtonDown(dashInput) || Input.GetButtonDown("Fire1"))
+            if(Input.GetButtonDown(dashInput))
                 playerMovement.Dash(Input.GetAxis(horizInput));
+
         if (Input.GetButtonDown(jumpInput) || Input.GetButtonDown("Jump"))
             playerMovement.Jump();
         if (Input.GetButtonDown(respawnInput) || Input.GetButtonDown("Fire2"))
