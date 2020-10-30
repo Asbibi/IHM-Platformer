@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
     IEnumerator LoadSceneCoroutine(int i)
     {
         loadingNextScene = true;
+        
+        yield return new WaitForEndOfFrame();
+
         Vector3 _circlePositionStart = Camera.current.WorldToScreenPoint(player.transform.position);
         _circlePositionStart.z = 0;
         circleTranstion.transform.position = _circlePositionStart;
@@ -67,7 +70,7 @@ public class GameManager : MonoBehaviour
         circleTranstion.gameObject.SetActive(true);
         circleTranstion.ForceInMiddleOfTransition();
 
-        yield return null;
+        yield return new WaitForEndOfFrame();
 
         _circlePositionStart = Camera.current.WorldToScreenPoint(spawnPosition);
         _circlePositionStart.z = 0;
