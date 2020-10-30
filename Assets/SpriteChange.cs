@@ -7,18 +7,18 @@ public class SpriteChange : MonoBehaviour
 {
     public Sprite[] sprites;
     [SerializeField]
-    private SpriteRenderer FirstPlaceHolder;
-    [SerializeField]
-    private SpriteRenderer SecondPlaceHolder;
-    [SerializeField]
-    private SpriteRenderer ThirdPlaceHolder;
-    [SerializeField]
-    private SpriteRenderer FourthPlaceHolder;
+    private string playerPref;
+    private SpriteRenderer sr;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
+        sr.sprite = sprites[PlayerPrefs.GetInt(playerPref)];
+        
+        
         
     }
 
