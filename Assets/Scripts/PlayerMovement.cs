@@ -4,40 +4,38 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //Time.deltaTime                        // s/f (\\update is called each frame => deltaTime ~ s)
     private Collider2D collider2d;
     private Animator _animator;
-    private float sizeX;    
-    private float sizeY;
+    private float sizeX;                    // m
+    private float sizeY;                    // m
 
     [Header("Speeds and Forces")]
-    private float speedX;
-    private float moveSpeedX;
-    private float jumpSpeedX;
-    public float speedY;
-    private Vector2 wind = Vector2.zero;
-    public float speedXMax = 5;
-    public float speedYMin = -10; // vitesse de chute maximum (minimum car négative)
-    public float jumpSpeedYInit = 1f;    
-    public float jumpSpeedXMax = 15f;
-    public float dashSpeed = 15f;
+    private float speedX;                   // m/s
+    private float moveSpeedX;               // m/s
+    private float jumpSpeedX;               // m/s
+    public float speedY;                    // m/s
+    private Vector2 wind = Vector2.zero;    // (m/s, m/s)
+    public float speedXMax = 5;             // m/s
+    public float speedYMin = -10;           // m/s
+    public float jumpSpeedYInit = 1f;       // m/s
+    public float jumpSpeedXMax = 15f;       // m/s
+    public float dashSpeed = 15f;           // m/s
 
     [Header("Frictions and Jump Parameters")]
-    public float gravity = 0.3f;
-    public float wallFriction = 0.1f;   // gravité appliquée lorsque le joueur est contre un mur
-    public float friction = 1f;
-    public float wallJumpAirFriction = 1f; // friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
-    public float inertiaCoefficientX = 0; // va de 0 à 1 ; 0 = control total et immédiat, 1 = impossible de changer la vitesse actuelle
-
+    public float gravity = 0.3f;            // m/s²
+    public float wallFriction = 0.1f;       // m/s² - gravité appliquée lorsque le joueur est contre un mur
+    public float friction = 1f;             // m/s²
+    public float wallJumpAirFriction = 1f;  // m/s² - friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
+    public float inertiaCoefficientX = 0;   // coeff - va de 0 à 1 ; 0 = control total et immédiat, 1 = impossible de changer la vitesse actuelle
     [SerializeField] private int maxNumberOfJump = 2;
     private int remainJump;
-
+    
+    [Header("Paramètres de détection des collisions")]
+    public float replacementTolerance = 0.01f;  // m
     private bool grounded;
     private bool rightWalled;
     private bool leftWalled;
-
-    [Header("Paramètres de détection des collisions")]
-    public float replacementTolerance = 0.01f;
-
 
 
     [Header("FeedBack parameters")]
@@ -110,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
         remainJump = maxNumberOfJump -1;
     }
     public void Dash(float dir){
-        //transform.position += new Vector3(dir * 10,0,0); // Téléportation
         jumpSpeedX = dashSpeed * dir;
         if (showVisualFeedBack && Mathf.Abs(dir) > 0.2f)
             GameManager.ShakeScreen(0.1f, 0.2f);
@@ -228,13 +225,13 @@ public class PlayerMovement : MonoBehaviour
         {
             speedX = 0;
             jumpSpeedX = 0;
-            transform.position += new Vector3(_nearestDistanceRight - replacementTolerance, 0, 0);
+            transform.position += Vector3.right * (_nearestDistanceRight - replacementTolerance);
         }
         else if (leftWalled && speedX < 0 && _nearestDistanceLeft != Mathf.Infinity)
         {
             speedX = 0;
             jumpSpeedX = 0;
-            transform.position += new Vector3(replacementTolerance - _nearestDistanceLeft, 0, 0);
+            transform.position += Vector3.right * (replacementTolerance - _nearestDistanceLeft);
         }
         #endregion
     }
@@ -301,7 +298,7 @@ public class PlayerMovement : MonoBehaviour
             if (speedY > 0 && _nearestDistance < speedY * Time.deltaTime)
             {
                 speedY = 0;
-                transform.position += new Vector3(0, _nearestDistance - 0.01f, 0);
+                transform.position += new Vector3(0, _nearestDistance - replacementTolerance, 0);
             }
         }
         #endregion
@@ -315,7 +312,7 @@ public class PlayerMovement : MonoBehaviour
         jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpAirFriction);
         if (grounded && (moveSpeedX == 0 || Mathf.Sign(moveSpeedX) != Mathf.Sign(jumpSpeedX)))
             jumpSpeedX = 0;
-        speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, speedX, inertiaCoefficientX);
+        speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, speedX, inertiaCoefficientX);  // => lerping between the perfect control (moveSpeedX + jumpSpeedX) and the current speed (speedX, kept from the previous frame)
     }
     private void ComputeSpeedY()
     {
@@ -326,23 +323,23 @@ public class PlayerMovement : MonoBehaviour
             if (speedY > speedYMin)
             {
                 if ((leftWalled || rightWalled) && (speedY <= 0))
-                    speedY -= wallFriction;
+                    speedY -= wallFriction * Time.deltaTime;
                 else
-                    speedY -= gravity;
+                    speedY -= gravity * Time.deltaTime;
             }
         }
     }
-    private float ComputeSpeedWithFriction(float _speed, float _friction)
+    private float ComputeSpeedWithFriction(float _speed, float _friction)   // _speed : m/s | _friction : m/s²
     {
         if (_speed > 0)
         {
-            _speed -= _friction;
+            _speed -= _friction * Time.deltaTime;
             if (_speed < 0)
                 _speed = 0;
         }
         else if (_speed < 0)
         {
-            _speed += _friction;
+            _speed += _friction * Time.deltaTime;
             if (_speed > 0)
                 _speed = 0;
         }
@@ -373,7 +370,6 @@ public class PlayerMovement : MonoBehaviour
         else
             delayBeforeTrail -= Time.deltaTime;
     }
-
     private void HandleAnimations(){
         _animator.SetBool("isGrounded", grounded);
         _animator.SetFloat("speedY", speedY); 

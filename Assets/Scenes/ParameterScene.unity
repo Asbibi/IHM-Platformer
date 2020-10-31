@@ -9560,10 +9560,10 @@ MonoBehaviour:
   defaultSpeedWallJump: 15
   defaultSpeedDash: 15
   defaultNbJump: 2
-  defaultFrictionX: 0.3
-  defaultGravity: 0.5
-  defaultWallFriction: 0.5
-  defaultWallGravity: 0.1
+  defaultFrictionX: 30
+  defaultGravity: 50
+  defaultWallFriction: 50
+  defaultWallGravity: 10
   defaultInertia: 0
   defaultToleranceReplacement: 0.01
   ControllerManager: {fileID: 1543276728}
