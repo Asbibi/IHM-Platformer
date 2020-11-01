@@ -107,6 +107,10 @@ public class UIParameterManager : UIMenuOpenable
         player.wallJumpAirFriction = _fricFlt;
     }
 
+    public void SetWallAirControl(float _airMultiplier)
+    {
+        player.airControlMultiplier = _airMultiplier;
+    }
     public void SetInertia (float _inertia)
     {
         player.inertiaCoefficientX = _inertia;

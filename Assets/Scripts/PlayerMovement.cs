@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public float wallFriction = 0.1f;       // m/s² - gravité appliquée lorsque le joueur est contre un mur
     public float friction = 1f;             // m/s²
     public float wallJumpAirFriction = 1f;  // m/s² - friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
+    public float airControlMultiplier = 1;  // coeff - determines how fast the player will nullify the lateral wall jump force using its input | 1 : medium ; 2 => 2 times faster ; 0.5 => 2 times slower
     public float inertiaCoefficientX = 0;   // coeff - va de 0 à 1 ; 0 = control total et immédiat, 1 = impossible de changer la vitesse actuelle
     [SerializeField] private int maxNumberOfJump = 2;
     private int remainJump;
@@ -77,7 +78,20 @@ public class PlayerMovement : MonoBehaviour
     // ===================== Public Methods =====================
     public void MoveX(float input)
     {
-        moveSpeedX = input * speedXMax;
+        float _moveSpeedX = input * speedXMax;
+        if (jumpSpeedX != 0 && Mathf.Sign(jumpSpeedX) != Mathf.Sign(_moveSpeedX))
+        {
+            jumpSpeedX += _moveSpeedX * 0.01f * airControlMultiplier;
+            if (Mathf.Sign(jumpSpeedX) == Mathf.Sign(_moveSpeedX))  // if sign of jumpSpeedX has changed
+            { 
+                moveSpeedX = -jumpSpeedX;
+                jumpSpeedX = 0;
+            }
+        }
+        else
+        {
+            moveSpeedX = _moveSpeedX;
+        }        
         if (moveSpeedX > 0 && rightWalled)
             moveSpeedX = 0;
         else if (moveSpeedX < 0 && leftWalled)

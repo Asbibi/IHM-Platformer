@@ -20,6 +20,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private InputField Gravity = null;
     [SerializeField] private InputField WallFriction = null;
     [SerializeField] private InputField WallGravity = null;
+    [SerializeField] private UIConvertSliderToInvert WallAirControl = null;
     [SerializeField] private Slider Inertia = null;
     //---------------------------------------------
     [SerializeField] private InputField ToleranceReplacement = null;
@@ -38,6 +39,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private float defaultGravity = 0.5f;
     [SerializeField] private float defaultWallFriction = 0.5f;
     [SerializeField] private float defaultWallGravity = 0.1f;
+    [SerializeField] private float defaultWallAirControl = 1;
     [SerializeField] private float defaultInertia = 0;
     //---------------------------------------------
     [SerializeField] private float defaultToleranceReplacement = 0.01f;
@@ -111,6 +113,8 @@ public class SettingsManager : MonoBehaviour
         ParameterManager.SetWallFriction(defaultWallFriction);
         WallGravity.text = defaultWallGravity.ToString(CultureInfo.InvariantCulture.NumberFormat);
         ParameterManager.SetWallJumpAirFriction(defaultWallGravity);
+        WallAirControl.SetConvertedValue(defaultWallAirControl);
+        ParameterManager.SetWallAirControl(defaultWallAirControl);
         Inertia.value = defaultInertia;
         ParameterManager.SetInertia(defaultInertia);
 
@@ -145,6 +149,8 @@ public class SettingsManager : MonoBehaviour
         ParameterManager.SetWallFriction(PlayerPrefs.GetFloat("WallFriction"));
         WallGravity.text = PlayerPrefs.GetFloat("WallGravity").ToString(CultureInfo.InvariantCulture.NumberFormat);
         ParameterManager.SetWallJumpAirFriction(PlayerPrefs.GetFloat("WallGravity"));
+        WallAirControl.SetConvertedValue(PlayerPrefs.GetFloat("WallAirControl"));
+        ParameterManager.SetWallAirControl(PlayerPrefs.GetFloat("WallAirControl"));
         Inertia.value = PlayerPrefs.GetFloat("Inertia");
         ParameterManager.SetInertia(PlayerPrefs.GetFloat("Inertia"));
 
@@ -165,6 +171,7 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetFloat("Gravity", float.Parse(Gravity.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("WallFriction", float.Parse(WallFriction.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("WallGravity", float.Parse(WallGravity.text, CultureInfo.InvariantCulture.NumberFormat));
+        PlayerPrefs.SetFloat("WallAirControl", WallAirControl.GetConvertedValue());        
         PlayerPrefs.SetFloat("Inertia", Inertia.value);
         PlayerPrefs.SetFloat("ToleranceReplacement", float.Parse(ToleranceReplacement.text, CultureInfo.InvariantCulture.NumberFormat));
     }
