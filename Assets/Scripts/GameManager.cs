@@ -15,9 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] EventSystem eventSystem = null;
     UICircleTransition circleTranstion;
     PauseMenu pauseSystem;
-    Wind windManager;
-    
+    Wind windManager;    
     ScreenShake ScreenShake;
+
     Vector3 spawnPosition = Vector3.right*2;
 
     bool visualFeedBacks = true;
@@ -47,6 +47,9 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameCamera.gameObject);
             DontDestroyOnLoad(eventSystem.gameObject);
 
+            ScreenShake = gameCamera.GetComponent<ScreenShake>();
+            if (ScreenShake == null)
+                Debug.LogError("ScreenShake system not found in camera given");
             circleTranstion = canvas.GetComponentInChildren<UICircleTransition>();
             if (circleTranstion == null)
                 Debug.LogError("CircleTransition system not found in canvas given");
@@ -129,16 +132,6 @@ public class GameManager : MonoBehaviour
         }
         else
             Debug.LogError("Try accessing null GameManager instance at SetVisualFeedBack(bool _vfb)");
-    }
-
-    public static void SetShakeCamera(ScreenShake _newScreenShake)
-    {
-        if (instance != null)
-        {
-            instance.ScreenShake = _newScreenShake;
-        }
-        else
-            Debug.LogError("Try accessing null GameManager instance at SetShakeCamera(ScreenShake _newScreenShake)");
     }
     public static void ShakeScreen(float _duration, float _magnitude)
     {

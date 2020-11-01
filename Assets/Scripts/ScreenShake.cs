@@ -5,14 +5,7 @@ using UnityEngine;
 public class ScreenShake : MonoBehaviour
 {
     bool notShaking = true;
-
-
-    private void Start()
-    {
-        GameManager.SetShakeCamera(this);
-    }
-
-
+    
     public IEnumerator Shake(float _duration, float _magnitude)
     {
         if (notShaking)
