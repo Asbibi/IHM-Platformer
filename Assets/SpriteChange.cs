@@ -7,7 +7,7 @@ public class SpriteChange : MonoBehaviour
 {
     public Sprite[] sprites;
     [SerializeField]
-    private string playerPref;
+    private string playerPref = null;
     private SpriteRenderer sr;
 
 
@@ -16,15 +16,6 @@ public class SpriteChange : MonoBehaviour
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        sr.sprite = sprites[PlayerPrefs.GetInt(playerPref)];
-        
-        
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        sr.sprite = sprites[PlayerPrefs.GetInt(playerPref)];       
     }
 }

@@ -33,6 +33,11 @@ public class PlayerController : MonoBehaviour
             playerMovement.Jump();
         if (Input.GetButtonDown(respawnInput) || Input.GetButtonDown("Fire2"))
             GameManager.RespawnPlayer();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Pause();
+        }
     }
 
 }
