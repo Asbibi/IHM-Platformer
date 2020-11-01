@@ -8564,7 +8564,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textValue: {fileID: 526684465}
   uiParameterManager: {fileID: 256848297}
-  convertedValue: 0
 --- !u!1 &962407742
 GameObject:
   m_ObjectHideFlags: 0
@@ -10086,6 +10085,7 @@ MonoBehaviour:
   Gravity: {fileID: 1736743950}
   WallFriction: {fileID: 397080649}
   WallGravity: {fileID: 1057952815}
+  WallAirControl: {fileID: 961353024}
   Inertia: {fileID: 961353023}
   ToleranceReplacement: {fileID: 2144457109}
   defaultAudioFeedBack: 0
@@ -10100,6 +10100,7 @@ MonoBehaviour:
   defaultGravity: 50
   defaultWallFriction: 50
   defaultWallGravity: 10
+  defaultWallAirControl: 1
   defaultInertia: 0
   defaultToleranceReplacement: 0.01
   ControllerManager: {fileID: 1543276728}
