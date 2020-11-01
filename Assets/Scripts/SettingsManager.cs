@@ -171,7 +171,7 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetFloat("Gravity", float.Parse(Gravity.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("WallFriction", float.Parse(WallFriction.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("WallGravity", float.Parse(WallGravity.text, CultureInfo.InvariantCulture.NumberFormat));
-        PlayerPrefs.SetFloat("WallAirControl", WallAirControl.GetConvertedValue());        
+        PlayerPrefs.SetFloat("WallAirControl", WallAirControl.GetConvertedValue());
         PlayerPrefs.SetFloat("Inertia", Inertia.value);
         PlayerPrefs.SetFloat("ToleranceReplacement", float.Parse(ToleranceReplacement.text, CultureInfo.InvariantCulture.NumberFormat));
     }

@@ -8564,6 +8564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textValue: {fileID: 526684465}
   uiParameterManager: {fileID: 256848297}
+  slider: {fileID: 961353023}
 --- !u!1 &962407742
 GameObject:
   m_ObjectHideFlags: 0
@@ -10086,7 +10087,7 @@ MonoBehaviour:
   WallFriction: {fileID: 397080649}
   WallGravity: {fileID: 1057952815}
   WallAirControl: {fileID: 961353024}
-  Inertia: {fileID: 961353023}
+  Inertia: {fileID: 1284710735}
   ToleranceReplacement: {fileID: 2144457109}
   defaultAudioFeedBack: 0
   defaultVisualFeedBack: 1

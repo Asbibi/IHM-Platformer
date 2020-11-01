@@ -7,6 +7,7 @@ public class UIConvertSliderToInvert : MonoBehaviour
 {
     [SerializeField] UISliderValue textValue = null;
     [SerializeField] UIParameterManager uiParameterManager = null;
+    [SerializeField] Slider slider = null;
     private float convertedValue;
 
     public void ConvertValue(float _rawValue)
@@ -27,6 +28,16 @@ public class UIConvertSliderToInvert : MonoBehaviour
     {
         convertedValue = _newValue;
         textValue.ShowSliderValue(convertedValue);
-        GetComponent<Slider>().value = convertedValue;
+        float _rawValue;
+        if (_newValue < 1)
+        {
+            _rawValue = -1 * ((1 / _newValue) - 1);
+        }
+        else
+        {
+            _rawValue = _newValue - 1;
+        }
+
+        slider.value = _rawValue;
     }
 }
