@@ -106,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
             leftWalled = !leftWalled;
             rightWalled = !rightWalled;
             remainJump = 1;
+            FindObjectOfType<AudioManager>().Play("JumpFX");
         }
         
         else if (remainJump > 0)
@@ -113,6 +114,8 @@ public class PlayerMovement : MonoBehaviour
             speedY = jumpSpeedYInit;
             grounded = false;
             remainJump--;
+
+            FindObjectOfType<AudioManager>().Play("JumpFX");
         }
     }
     public void ForceJump(float _jumpSpeed)

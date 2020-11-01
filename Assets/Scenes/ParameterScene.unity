@@ -7604,6 +7604,7 @@ MonoBehaviour:
   groundSmokeOffset: {x: 0, y: -0.3, z: 0}
   wallSmokeOffset: {x: 0.3, y: 0, z: 0}
   frameSpaceBetweenTrails: 0.03
+  audioManager: {fileID: 0}
 --- !u!50 &857834586
 Rigidbody2D:
   serializedVersion: 4
