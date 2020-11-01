@@ -23,7 +23,7 @@ public class Wind : MonoBehaviour
     {
         if (windForce != Vector2.zero)
         {
-            transform.position += transform.right * windForce.magnitude * 3;
+            transform.position += transform.right * windForce.magnitude * 300 * Time.deltaTime;
             if ((transform.position - startpos).magnitude > length)
                 transform.position = startpos;
         }
@@ -39,9 +39,15 @@ public class Wind : MonoBehaviour
         windForce.y = _windForce;
         ApplyWindChanges(_player);
     }
+    public void SetWind(Vector2 _newWind, PlayerMovement _player)
+    {
+        windForce = _newWind;
+        ApplyWindChanges(_player);
+    }
     private void ApplyWindChanges(PlayerMovement _player)
     {
         _player.SetWind(windForce);
+
         if (windForce != Vector2.zero)
             transform.rotation = Quaternion.Euler(Vector3.forward * Mathf.Atan2(windForce.y, windForce.x) * Mathf.Rad2Deg);
         foreach (Image _im in windUIImages)

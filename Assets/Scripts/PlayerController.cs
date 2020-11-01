@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetAxis("Horizontal") != 0)
             playerMovement.MoveX(Input.GetAxis("Horizontal"));
-            if(Input.GetButtonDown("Fire1"))
+            if(Input.GetButtonDown("DashKey"))
                 playerMovement.Dash(Input.GetAxis("Horizontal"));
 
         else if (Input.GetAxis(horizInput) !=0)
@@ -31,10 +31,10 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown(jumpInput) || Input.GetButtonDown("Jump"))
             playerMovement.Jump();
-        if (Input.GetButtonDown(respawnInput) || Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown(respawnInput) || Input.GetButtonDown("RespawnKey"))
             GameManager.RespawnPlayer();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetButtonDown("Pause"))
         {
             GameManager.Pause();
         }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18cb5c7b1b7362e40b5b6bba44bb1d96, type: 3}
+  m_Name: Level 0
+  m_EditorClassIdentifier: 
+  spawnPosition: {x: 0, y: 0}
+  cameraPosition: {x: -0.15, y: 0.27, z: -10}
+  cameraSize: 9
+  windVector: {x: 0, y: 0}

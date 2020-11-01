@@ -11,14 +11,18 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject player = null;
     [SerializeField] GameObject canvas = null;
+    [SerializeField] Camera gameCamera = null;
     [SerializeField] EventSystem eventSystem = null;
     UICircleTransition circleTranstion;
     PauseMenu pauseSystem;
+    Wind windManager;
+    
     ScreenShake ScreenShake;
     Vector3 spawnPosition = Vector3.right*2;
 
     bool visualFeedBacks = true;
     bool loadingNextScene = false;
+    bool receivedLevelValues = false;
 
     private void Awake()
     {
@@ -28,6 +32,8 @@ public class GameManager : MonoBehaviour
                 Destroy(player);
             if (canvas != null)
                 Destroy(canvas);
+            if (gameCamera != null)
+                Destroy(gameCamera.gameObject);
             if (eventSystem != null)
                 Destroy(eventSystem.gameObject);
             Destroy(gameObject);
@@ -38,14 +44,18 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             DontDestroyOnLoad(player);
             DontDestroyOnLoad(canvas);
+            DontDestroyOnLoad(gameCamera.gameObject);
             DontDestroyOnLoad(eventSystem.gameObject);
-            circleTranstion = canvas.GetComponentInChildren<UICircleTransition>();
 
+            circleTranstion = canvas.GetComponentInChildren<UICircleTransition>();
             if (circleTranstion == null)
                 Debug.LogError("CircleTransition system not found in canvas given");
             pauseSystem = canvas.GetComponent<PauseMenu>();
             if (pauseSystem == null)
                 Debug.LogError("Pause system not found in canvas given");
+            windManager = canvas.GetComponentInChildren<Wind>();
+            if (windManager == null)
+                Debug.LogError("Wind Manager not found in canvas given");
 
             visualFeedBacks = PlayerPrefs.GetInt("VisualFeedBack") != 0;
             player.GetComponent<PlayerMovement>().UpdateShowVisualFeedBack();
@@ -161,9 +171,9 @@ public class GameManager : MonoBehaviour
     {
         loadingNextScene = true;
 
-        yield return new WaitForEndOfFrame();
+        //yield return new WaitForEndOfFrame();
 
-        Vector3 _circlePositionStart = Camera.main.WorldToScreenPoint(player.transform.position);
+        Vector3 _circlePositionStart = gameCamera.WorldToScreenPoint(player.transform.position);
         _circlePositionStart.z = 0;
         circleTranstion.transform.position = _circlePositionStart;
         circleTranstion.PlayTransition();
@@ -171,16 +181,19 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(circleTranstion.startDuration);
 
         Debug.Log("End of transition");
+        receivedLevelValues = false;
         SceneManager.LoadScene(i);
         yield return null;
         circleTranstion.gameObject.SetActive(false);
-        //yield return null;
         circleTranstion.gameObject.SetActive(true);
         circleTranstion.ForceInMiddleOfTransition();
 
-        yield return new WaitForEndOfFrame();
+        while (!receivedLevelValues)
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
-        _circlePositionStart = Camera.main.WorldToScreenPoint(spawnPosition);
+        _circlePositionStart = gameCamera.WorldToScreenPoint(spawnPosition);
         _circlePositionStart.z = 0;
         circleTranstion.transform.position = _circlePositionStart;
         circleTranstion.PlayTransition();
@@ -189,15 +202,20 @@ public class GameManager : MonoBehaviour
         loadingNextScene = false;
     }
 
-    public static void SetSpawnPoint(Vector3 _spawnPosition)
+
+    public static void SetLevelValues(LevelValuesScriptable _levelValues)
     {
         if (instance != null)
         {
-            instance.spawnPosition = _spawnPosition;
+            instance.spawnPosition = _levelValues.spawnPosition;
+            instance.windManager.SetWind(_levelValues.windVector, instance.player.GetComponent<PlayerMovement>());
+            instance.gameCamera.transform.position = _levelValues.cameraPosition;
+            instance.gameCamera.orthographicSize = _levelValues.cameraSize;
             instance.SpawnPlayer();
+            instance.receivedLevelValues = true;
         }
-        else       
-            Debug.LogError("Try accessing null GameManager instance at SetSpawnPoint()");       
+        else
+            Debug.LogError("Try accessing null GameManager instance at SetLevelValues()");
     }
     public static void RespawnPlayer()
     {

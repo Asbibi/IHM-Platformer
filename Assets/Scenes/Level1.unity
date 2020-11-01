@@ -128,6 +128,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1237317828484393291, guid: 3b855d87e86b1ff4aa95b112bc58c80b,
+        type: 3}
+      propertyPath: levelValues
+      value: 
+      objectReference: {fileID: 11400000, guid: cabc199061e30434eb26a92783866e9b,
+        type: 2}
     - target: {fileID: 7260813094539094785, guid: 3b855d87e86b1ff4aa95b112bc58c80b,
         type: 3}
       propertyPath: m_Name
@@ -684,7 +690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &519420029
 AudioListener:
   m_ObjectHideFlags: 0
