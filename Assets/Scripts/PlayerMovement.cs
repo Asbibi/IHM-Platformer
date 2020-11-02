@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("FeedBack parameters")]
     bool showVisualFeedBack = true;
+    bool AudioFeedBack = true;
     [SerializeField] GameObject playerTrail = null;
     [SerializeField] GameObject smokeTrail = null;
     [SerializeField] Vector3 groundSmokeOffset = Vector3.zero;
@@ -71,6 +72,10 @@ public class PlayerMovement : MonoBehaviour
         {
             AddTrails();
             HandleAnimations();
+        }
+        if(AudioFeedBack)
+        {
+            HandleFX();
         }
     }
 
@@ -106,7 +111,6 @@ public class PlayerMovement : MonoBehaviour
             leftWalled = !leftWalled;
             rightWalled = !rightWalled;
             remainJump = 1;
-            FindObjectOfType<AudioManager>().Play("JumpFX");
         }
         
         else if (remainJump > 0)
@@ -340,8 +344,12 @@ public class PlayerMovement : MonoBehaviour
             if (speedY > speedYMin)
             {
                 if ((leftWalled || rightWalled) && (speedY <= 0))
+                {
                     speedY -= wallFriction * Time.deltaTime;
-                else
+                    if(AudioFeedBack){
+                        FindObjectOfType<AudioManager>().Play("SlideFX"); 
+                    }
+                }else
                     speedY -= gravity * Time.deltaTime;
             }
         }
@@ -390,5 +398,13 @@ public class PlayerMovement : MonoBehaviour
     private void HandleAnimations(){
         _animator.SetBool("isGrounded", grounded);
         _animator.SetFloat("speedY", speedY); 
+    }
+
+    private void HandleFX(){
+        if(_animator.GetCurrentAnimatorStateInfo(0).IsName("JumpAnimationUp"))
+            FindObjectOfType<AudioManager>().Play("JumpFX");
+            
+        if(_animator.GetCurrentAnimatorStateInfo(0).IsName("JumpAnimationDown"))
+            FindObjectOfType<AudioManager>().Play("JumpDownFX");
     }
 }
