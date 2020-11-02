@@ -20,4 +20,9 @@ public class UITimeManager : MonoBehaviour
         elapsedTime += Time.deltaTime;
         chrono.text = ((int)elapsedTime).ToString();
     }
+    
+    public float GetElapsedTime()
+    {
+        return elapsedTime;
+    }
 }

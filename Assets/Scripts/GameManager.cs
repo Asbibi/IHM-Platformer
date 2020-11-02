@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
@@ -16,7 +15,8 @@ public class GameManager : MonoBehaviour
     UICircleTransition circleTranstion;
     PauseMenu pauseSystem;
     Wind windManager;    
-    ScreenShake ScreenShake;
+    ScreenShake screenShake;
+    UITimeManager timeManager;
 
     Vector3 spawnPosition = Vector3.right*2;
 
@@ -47,9 +47,6 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameCamera.gameObject);
             DontDestroyOnLoad(eventSystem.gameObject);
 
-            ScreenShake = gameCamera.GetComponent<ScreenShake>();
-            if (ScreenShake == null)
-                Debug.LogError("ScreenShake system not found in camera given");
             circleTranstion = canvas.GetComponentInChildren<UICircleTransition>();
             if (circleTranstion == null)
                 Debug.LogError("CircleTransition system not found in canvas given");
@@ -59,6 +56,12 @@ public class GameManager : MonoBehaviour
             windManager = canvas.GetComponentInChildren<Wind>();
             if (windManager == null)
                 Debug.LogError("Wind Manager not found in canvas given");
+            screenShake = gameCamera.GetComponent<ScreenShake>();
+            if (screenShake == null)
+                Debug.LogError("ScreenShake system not found in camera given");
+            timeManager = canvas.GetComponentInChildren<UITimeManager>();
+            if (timeManager == null)
+                Debug.LogError("TimeManager system not found in camera given");
 
             visualFeedBacks = PlayerPrefs.GetInt("VisualFeedBack") != 0;
             player.GetComponent<PlayerMovement>().UpdateShowVisualFeedBack();
@@ -84,7 +87,6 @@ public class GameManager : MonoBehaviour
     }
     public static void LeaveGameToMainMenu()
     {
-
         if (instance != null && instance.loadingNextScene == false)
         {
             instance.StartCoroutine(instance.LoadMainMenuCoroutine());
@@ -116,6 +118,19 @@ public class GameManager : MonoBehaviour
         Destroy(eventSystem.gameObject);
         Destroy(gameObject);
     }
+    public static float EndGame()
+    {
+        if (instance != null)
+        {
+            instance.CleanGameManager();
+            return instance.timeManager.GetElapsedTime();
+        }
+        else
+        {
+            Debug.LogError("Try accessing null GameManager instance at EndGame()");
+            return -1;
+        }
+    }
     #endregion
 
     #region Feedbacks
@@ -137,9 +152,9 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null)
         {
-            if (instance.ScreenShake != null && instance.visualFeedBacks)
+            if (instance.screenShake != null && instance.visualFeedBacks)
             {
-                instance.StartCoroutine(instance.ScreenShake.Shake(_duration, _magnitude));
+                instance.StartCoroutine(instance.screenShake.Shake(_duration, _magnitude));
             }
             else
                 Debug.LogError("Try accessing null ScreenShake from GameManager instance at ShakeScreen() or visual fb disabled");

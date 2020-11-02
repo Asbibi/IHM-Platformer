@@ -14,13 +14,20 @@ public class UIParameterManager : UIMenuOpenable
 
 
     // =============== Feedbacks Parameters ===============
-    public void SetAudioFeedBack(bool _vfb)
+    public void SetAudioFeedBack(bool _afb)
     {
-        // TODO ===========================================
+        GameManager.SetVisualFeedBack(_afb);
     }
     public void SetVisualFeedBack(bool _vfb)
     {
         GameManager.SetVisualFeedBack(_vfb);
+    }
+    public void SetVolume(float _volume)
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.SetVolume(_volume);
+        }
     }
 
     // =============== Move Parameter Player =============== 
