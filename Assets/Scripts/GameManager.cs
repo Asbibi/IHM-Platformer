@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     Vector3 spawnPosition = Vector3.right*2;
 
+    bool audioFeedBacks = true;
     bool visualFeedBacks = true;
     bool loadingNextScene = false;
     bool receivedLevelValues = false;
@@ -134,6 +135,20 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Feedbacks
+    public static bool GetAudioFeedBack()
+    {
+        return instance != null && instance.audioFeedBacks;
+    }
+    public static void SetAudioFeedBack(bool _afb)
+    {
+        if (instance != null)
+        {
+            instance.audioFeedBacks = _afb;
+            instance.player.GetComponent<PlayerMovement>().UpdatePlayAudioFeedBack();
+        }
+        else
+            Debug.LogError("Try accessing null GameManager instance at SetAudioFeedBack(bool _afb)");
+    }
     public static bool GetVisualFeedBack()
     {
         return instance != null && instance.visualFeedBacks;

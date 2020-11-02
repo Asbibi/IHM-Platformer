@@ -29,7 +29,7 @@ public class SettingsManager : MonoBehaviour
     
     [SerializeField] private bool defaultAudioFeedBack = false;
     [SerializeField] private bool defaultVisualFeedBack = true;
-    [SerializeField] private float defaultVolume = 0f;
+    [SerializeField] private float defaultVolume = 1;
     //---------------------------------------------
     [SerializeField] private float defaultSpeedXMax = 7;
     [SerializeField] private float defaultSpeedYMin = 15;

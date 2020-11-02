@@ -16,7 +16,7 @@ public class UIParameterManager : UIMenuOpenable
     // =============== Feedbacks Parameters ===============
     public void SetAudioFeedBack(bool _afb)
     {
-        GameManager.SetVisualFeedBack(_afb);
+        GameManager.SetAudioFeedBack(_afb);
     }
     public void SetVisualFeedBack(bool _vfb)
     {

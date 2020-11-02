@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("FeedBack parameters")]
     bool showVisualFeedBack = true;
-    bool AudioFeedBack = true;
+    bool audioFeedBack = true;
     [SerializeField] GameObject playerTrail = null;
     [SerializeField] GameObject smokeTrail = null;
     [SerializeField] Vector3 groundSmokeOffset = Vector3.zero;
@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
             AddTrails();
             HandleAnimations();
         }
-        if(AudioFeedBack)
+        if(audioFeedBack)
         {
             HandleFX();
         }
@@ -163,6 +163,10 @@ public class PlayerMovement : MonoBehaviour
             return transform.position.y - sizeY - replacementTolerance;
         else
             return transform.position.y - sizeY;
+    }
+    public void UpdatePlayAudioFeedBack()
+    {
+        audioFeedBack = GameManager.GetAudioFeedBack();
     }
     public void UpdateShowVisualFeedBack()
     {
@@ -356,7 +360,7 @@ public class PlayerMovement : MonoBehaviour
                 if ((leftWalled || rightWalled) && (speedY <= 0))
                 {
                     speedY -= wallFriction * Time.deltaTime;
-                    if(AudioFeedBack){
+                    if(audioFeedBack){
                         FindObjectOfType<AudioManager>().Play("SlideFX"); 
                     }
                 }else

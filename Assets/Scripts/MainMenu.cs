@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] Text RecordText;
+    [SerializeField] Text RecordText = null;
 
     private void Start()
     {
