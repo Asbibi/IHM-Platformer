@@ -4128,7 +4128,7 @@ GameObject:
   - component: {fileID: 356926097}
   - component: {fileID: 356926096}
   m_Layer: 0
-  m_Name: SpriteJumpTuto (8)
+  m_Name: SpriteJumpTuto8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4165,8 +4165,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!212 &356926097
 SpriteRenderer:
@@ -5872,7 +5872,7 @@ GameObject:
   - component: {fileID: 544295600}
   - component: {fileID: 544295599}
   m_Layer: 0
-  m_Name: SpriteJumpTuto (1)
+  m_Name: SpriteJumpTuto2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5909,8 +5909,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!212 &544295600
 SpriteRenderer:
@@ -7344,7 +7344,7 @@ GameObject:
   - component: {fileID: 721838507}
   - component: {fileID: 721838506}
   m_Layer: 0
-  m_Name: SpriteJumpTuto (2)
+  m_Name: SpriteJumpTuto3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7381,8 +7381,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!212 &721838507
 SpriteRenderer:
@@ -11621,6 +11621,94 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1290472896}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 544295599}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 721838506}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1657202409}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1769603495}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2091901157}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1300861980}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 356926096}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1106097875
 MonoBehaviour:
@@ -12381,7 +12469,7 @@ GameObject:
   - component: {fileID: 1181916485}
   - component: {fileID: 1181916486}
   m_Layer: 0
-  m_Name: SpriteDashJumpTuto
+  m_Name: SpriteDashTuto1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12468,8 +12556,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: DashInput
 --- !u!1 &1183190705
 GameObject:
@@ -13745,7 +13833,7 @@ GameObject:
   - component: {fileID: 1290472895}
   - component: {fileID: 1290472896}
   m_Layer: 0
-  m_Name: SpriteJumpTuto
+  m_Name: SpriteJumpTuto1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13832,8 +13920,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!1 &1297823125
 GameObject:
@@ -14047,7 +14135,7 @@ GameObject:
   - component: {fileID: 1300861981}
   - component: {fileID: 1300861980}
   m_Layer: 0
-  m_Name: SpriteJumpTuto (6)
+  m_Name: SpriteJumpTuto7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14084,8 +14172,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!212 &1300861981
 SpriteRenderer:
@@ -15850,6 +15938,28 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1543276728}
         m_MethodName: SetDashInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1181916486}
+        m_MethodName: SetSprite
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1678390947}
+        m_MethodName: SetSprite
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18914,7 +19024,7 @@ GameObject:
   - component: {fileID: 1657202410}
   - component: {fileID: 1657202409}
   m_Layer: 0
-  m_Name: SpriteJumpTuto (3)
+  m_Name: SpriteJumpTuto4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18951,8 +19061,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!212 &1657202410
 SpriteRenderer:
@@ -19167,7 +19277,7 @@ GameObject:
   - component: {fileID: 1678390948}
   - component: {fileID: 1678390947}
   m_Layer: 0
-  m_Name: SpriteDashJumpTuto (2)
+  m_Name: SpriteDashTuto2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19204,8 +19314,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: DashInput
 --- !u!212 &1678390948
 SpriteRenderer:
@@ -20149,7 +20259,7 @@ GameObject:
   - component: {fileID: 1769603496}
   - component: {fileID: 1769603495}
   m_Layer: 0
-  m_Name: SpriteJumpTuto (4)
+  m_Name: SpriteJumpTuto5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20186,8 +20296,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!212 &1769603496
 SpriteRenderer:
@@ -24112,7 +24222,7 @@ GameObject:
   - component: {fileID: 2091901158}
   - component: {fileID: 2091901157}
   m_Layer: 0
-  m_Name: SpriteJumpTuto (5)
+  m_Name: SpriteJumpTuto6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24149,8 +24259,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3aba0ea7efcdbff41be1de273de969e9, type: 3}
   - {fileID: 21300000, guid: 7f91071ea302ac64d9c4a31aed35462f, type: 3}
   - {fileID: 21300000, guid: e9fea70fc25e60445825119bd64f8510, type: 3}
-  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   - {fileID: 21300000, guid: 979d5f13c2aaeba4ba75dee7d6aedf14, type: 3}
+  - {fileID: 21300000, guid: f2ce11cb50cd7ed43b3f07965ae17cbc, type: 3}
   playerPref: JumpInput
 --- !u!212 &2091901158
 SpriteRenderer:
