@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpSpeedYInit = 1f;       // m/s
     public float jumpSpeedXMax = 15f;       // m/s
     public float dashSpeed = 15f;           // m/s
+    private float previousMoovePlusJump;
 
     [Header("Frictions and Jump Parameters")]
     public float gravity = 0.3f;            // m/s²
@@ -180,9 +181,12 @@ public class PlayerMovement : MonoBehaviour
 
     // ===================== Compute Speed Methods =====================
     private void ApplySpeedX()
-    {        
-        float _spX = speedX * (1 + (wind.x * Mathf.Sign(speedX)));
-        transform.position += Vector3.right * _spX * Time.deltaTime;
+    {
+        /*float _spX = speedX;
+        if(!grounded && speedX == 0)
+            _spX = wind.x * 2;
+        _spX *= (1 + (wind.x * Mathf.Sign(speedX)));*/
+        transform.position += Vector3.right * speedX * Time.deltaTime;
     }
     private void ApplySpeedY()
     {
@@ -347,7 +351,12 @@ public class PlayerMovement : MonoBehaviour
         jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpAirFriction);
         if (grounded && (moveSpeedX == 0 || Mathf.Sign(moveSpeedX) != Mathf.Sign(jumpSpeedX)))
             jumpSpeedX = 0;
-        speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, speedX, inertiaCoefficientX);  // => lerping between the perfect control (moveSpeedX + jumpSpeedX) and the current speed (speedX, kept from the previous frame)
+        
+        speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, previousMoovePlusJump, inertiaCoefficientX);  // => lerping between the perfect control (moveSpeedX + jumpSpeedX) and the current speed (speedX, kept from the previous frame)
+        previousMoovePlusJump = speedX;
+        if(!grounded && speedX == 0)
+            speedX = wind.x * 2;
+        speedX = speedX*(1 + (wind.x * Mathf.Sign(speedX)));
     }
     private void ComputeSpeedY()
     {
