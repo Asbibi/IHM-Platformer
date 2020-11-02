@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator _animator;
     private float sizeX;                    // m
     private float sizeY;                    // m
+    private AudioManager _audioManager;
 
     [Header("Speeds and Forces")]
     private float speedX;                   // m/s
@@ -59,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
         sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;        
         sizeY = GetComponent<SpriteRenderer>().bounds.extents.y;
+        _audioManager = AudioManager.instance;
     }
     void Update()
     {
@@ -127,8 +129,6 @@ public class PlayerMovement : MonoBehaviour
             speedY = jumpSpeedYInit;
             grounded = false;
             remainJump--;
-
-            FindObjectOfType<AudioManager>().Play("JumpFX");
         }
     }
     public void ForceJump(float _jumpSpeed)
@@ -411,10 +411,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void HandleFX(){
-        if(_animator.GetCurrentAnimatorStateInfo(0).IsName("JumpAnimationUp"))
-            FindObjectOfType<AudioManager>().Play("JumpFX");
+        if(_animator.GetAnimatorTransitionInfo(0).IsUserName("TransitionUP") && _animator.GetAnimatorTransitionInfo(0).normalizedTime == 0)
+            _audioManager.Play("JumpFX");
             
-        if(_animator.GetCurrentAnimatorStateInfo(0).IsName("JumpAnimationDown"))
-            FindObjectOfType<AudioManager>().Play("JumpDownFX");
+        if(_animator.GetAnimatorTransitionInfo(0).IsUserName("TransitionDown") && _animator.GetAnimatorTransitionInfo(0).normalizedTime == 0)
+            _audioManager.Play("JumpDownFX");
+        if((leftWalled || rightWalled) && speedY < 0)
+            _audioManager.Play("SlideFX");
     }
 }

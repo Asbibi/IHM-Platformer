@@ -5476,7 +5476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: JumpFX
-    clip: {fileID: 8300000, guid: 5d44d79b7e1583c479f85edb32f3bd49, type: 3}
+    clip: {fileID: 8300000, guid: 2b6f2891745776f40ab6ce418c0a7de8, type: 3}
     volume: 0.56
     pitch: 1.02
     loop: 0
@@ -5488,7 +5488,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: SlideFX
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 76e16e9b87d31614c9267143ad1165a1, type: 3}
     volume: 0.56
     pitch: 0.5
     loop: 0
