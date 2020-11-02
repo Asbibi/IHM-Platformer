@@ -2282,10 +2282,10 @@ RectTransform:
   m_Father: {fileID: 1250592197}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 72.2, y: 26.9}
-  m_SizeDelta: {x: 130.4, y: 43.530144}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -72.2, y: 26.9}
+  m_SizeDelta: {x: 130.40002, y: 43.53015}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &367727084
 MonoBehaviour:
@@ -2301,7 +2301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2313,7 +2313,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 8
     m_MaxSize: 40
-    m_Alignment: 6
+    m_Alignment: 8
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -5544,6 +5544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RecordText: {fileID: 2077148451}
+  HelpMenu: {fileID: 1776140945}
 --- !u!114 &1027856633
 MonoBehaviour:
   m_ObjectHideFlags: 0

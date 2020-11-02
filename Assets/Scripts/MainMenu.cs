@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Text RecordText = null;
+    [SerializeField] GameObject HelpMenu = null;
 
     private void Start()
     {
@@ -11,6 +12,12 @@ public class MainMenu : MonoBehaviour
             RecordText.text = "-";
         else
             RecordText.text = ((int)PlayerPrefs.GetFloat("Record")).ToString() + "s";
+
+        if (PlayerPrefs.GetInt("PlayerPrefCreated") == 0)   // First game
+        {
+            HelpMenu.SetActive(true);
+            gameObject.SetActive(false);
+        }
     }
 
     public void PlayGame()
