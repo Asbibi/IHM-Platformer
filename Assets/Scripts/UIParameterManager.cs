@@ -115,6 +115,10 @@ public class UIParameterManager : UIMenuOpenable
     {
         player.inertiaCoefficientX = _inertia;
     }
+    public void SetDashSuspensionDelay(float _delay)
+    {
+        player.dashGravitySuspensionDelay = _delay;
+    }
 
 
     // =============== Dtection Collision =============== 

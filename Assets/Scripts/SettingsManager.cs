@@ -22,6 +22,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private InputField WallGravity = null;
     [SerializeField] private UIConvertSliderToInvert WallAirControl = null;
     [SerializeField] private Slider Inertia = null;
+    [SerializeField] private Slider DashSuspension = null;
     //---------------------------------------------
     [SerializeField] private InputField ToleranceReplacement = null;
     
@@ -41,6 +42,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private float defaultWallGravity = 0.1f;
     [SerializeField] private float defaultWallAirControl = 1;
     [SerializeField] private float defaultInertia = 0;
+    [SerializeField] private float defaultDashSuspension = 0;
     //---------------------------------------------
     [SerializeField] private float defaultToleranceReplacement = 0.01f;
 
@@ -62,7 +64,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private InputField SlimeSpeedMultiplier = null;
     [SerializeField] private InputField SlimeNullSpeed = null;
     [SerializeField] private InputField PicDetection = null;
-    [SerializeField] private float defaultIceInertia = 0.97f;
+    [SerializeField] private float defaultIceInertia = 0.995f;
     [SerializeField] private float defaultSlimeSpeedMultiplier = 2;
     [SerializeField] private float defaultSlimeNullSpeed = 10;
     [SerializeField] private float defaultPicDetection = 0.1f;
@@ -117,6 +119,8 @@ public class SettingsManager : MonoBehaviour
         ParameterManager.SetWallAirControl(defaultWallAirControl);
         Inertia.value = defaultInertia;
         ParameterManager.SetInertia(defaultInertia);
+        DashSuspension.value = defaultDashSuspension;
+        ParameterManager.SetDashSuspensionDelay(defaultDashSuspension);
 
         ToleranceReplacement.text = defaultToleranceReplacement.ToString(CultureInfo.InvariantCulture.NumberFormat);
         ParameterManager.SetDetectionTolerance(defaultToleranceReplacement);
@@ -153,6 +157,9 @@ public class SettingsManager : MonoBehaviour
         ParameterManager.SetWallAirControl(PlayerPrefs.GetFloat("WallAirControl"));
         Inertia.value = PlayerPrefs.GetFloat("Inertia");
         ParameterManager.SetInertia(PlayerPrefs.GetFloat("Inertia"));
+        DashSuspension.value = PlayerPrefs.GetFloat("DashSuspension");
+        ParameterManager.SetDashSuspensionDelay(PlayerPrefs.GetFloat("DashSuspension"));
+        
 
         ToleranceReplacement.text = PlayerPrefs.GetFloat("ToleranceReplacement").ToString(CultureInfo.InvariantCulture.NumberFormat);
         ParameterManager.SetDetectionTolerance(PlayerPrefs.GetFloat("ToleranceReplacement"));
@@ -173,6 +180,7 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetFloat("WallGravity", float.Parse(WallGravity.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("WallAirControl", WallAirControl.GetConvertedValue());
         PlayerPrefs.SetFloat("Inertia", Inertia.value);
+        PlayerPrefs.SetFloat("DashSuspension", DashSuspension.value);
         PlayerPrefs.SetFloat("ToleranceReplacement", float.Parse(ToleranceReplacement.text, CultureInfo.InvariantCulture.NumberFormat));
     }
     #endregion

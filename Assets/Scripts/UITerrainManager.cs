@@ -21,11 +21,11 @@ public class UITerrainManager : UIMenuOpenable
     // =============== On wind Slider Change =============== 
     public void SetWindX(float _windForce)
     {
-        wind.SetWindX(_windForce/5, player);
+        wind.SetWindX(_windForce, player);
     }
     public void SetWindY(float _windForce)
     {
-        wind.SetWindY(_windForce/5, player);
+        wind.SetWindY(_windForce, player);
     }
 
     public void SetIceInertia(string _inertStr)
