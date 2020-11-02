@@ -15,4 +15,4 @@ MonoBehaviour:
   spawnPosition: {x: -7.14, y: -2.74, z: 0}
   cameraPosition: {x: 7.3, y: 4.16, z: -10}
   cameraSize: 9
-  windVector: {x: 3, y: 1}
+  windVector: {x: 5, y: 1}
