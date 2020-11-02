@@ -29,6 +29,6 @@ public class SetupEventSystem : MonoBehaviour
         standaloneInputModule = GetComponent<StandaloneInputModule>();
         standaloneInputModule.horizontalAxis = controllerInputsHAxis[PlayerPrefs.GetInt("MoveLatInput")];
         standaloneInputModule.verticalAxis = controllerInputsVAxis[PlayerPrefs.GetInt("MoveLatInput")];
-        standaloneInputModule.submitButton = controllerInputsButton[PlayerPrefs.GetInt("JumpInput")];       
+        standaloneInputModule.submitButton = controllerInputsButton[PlayerPrefs.GetInt("JumpInput")]; 
     }
 }

@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class PauseMenu : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject firstSelected = null;
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
 
@@ -29,6 +32,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+
+        EventSystem.current.SetSelectedGameObject(firstSelected);
     }  
 
     public void MainMenu()

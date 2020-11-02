@@ -6558,7 +6558,7 @@ GameObject:
   m_Component:
   - component: {fileID: 676447790}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: ChronoObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13023,6 +13023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb2d73f75213c5045871764603e183df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstSelected: {fileID: 2022871842}
   pauseMenuUI: {fileID: 1352331760}
 --- !u!1 &1226305419
 GameObject:
