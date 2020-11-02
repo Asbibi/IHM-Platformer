@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     public float inertiaCoefficientX = 0;   // coeff - va de 0 à 1 ; 0 = control total et immédiat, 1 = impossible de changer la vitesse actuelle
     [SerializeField] private int maxNumberOfJump = 2;
     private int remainJump;
+    public float dashGravitySuspensionDelay = -1;  // s - delay during speedY = 0, starting at dash input | if =<0, there is no suspension
+    private float timerDashGravitySuspension = 0;
     
     [Header("Paramètres de détection des collisions")]
     public float replacementTolerance = 0.01f;  // m
@@ -62,6 +64,13 @@ public class PlayerMovement : MonoBehaviour
         // Move on Y axis
         ComputeSpeedY();
         CheckCollisionsY();
+        #region Gravity Suspension
+        if (timerDashGravitySuspension > 0)
+        {
+            speedY = 0;
+            timerDashGravitySuspension -= Time.deltaTime;
+        }
+        #endregion
         ApplySpeedY();
         // Move on X axis
         ComputeSpeedX();
@@ -126,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Dash(float dir){
         jumpSpeedX = dashSpeed * dir;
+        timerDashGravitySuspension = dashGravitySuspensionDelay;
         if (showVisualFeedBack && Mathf.Abs(dir) > 0.2f)
             GameManager.ShakeScreen(0.1f, 0.2f);
     }
