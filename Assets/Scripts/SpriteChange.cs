@@ -1,21 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Sprites;
+﻿using UnityEngine;
 
 public class SpriteChange : MonoBehaviour
 {
     public Sprite[] sprites;
-    [SerializeField]
-    private string playerPref = null;
+    [SerializeField] private string playerPref = null;
     private SpriteRenderer sr;
 
 
+    public void SetSprite(int _value)
+    {        
+        sr.sprite = sprites[_value];
+    }
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
-        sr.sprite = sprites[PlayerPrefs.GetInt(playerPref)];       
+        sr = GetComponent<SpriteRenderer>();   
+        sr.sprite = sprites[PlayerPrefs.GetInt(playerPref)];
     }
 }
