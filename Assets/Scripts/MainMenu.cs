@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Text RecordText = null;
     [SerializeField] GameObject HelpMenu = null;
+    [SerializeField] GameObject HelpBackButton = null;
 
     private void Start()
     {
@@ -16,6 +19,7 @@ public class MainMenu : MonoBehaviour
         if (PlayerPrefs.GetInt("PlayerPrefCreated") == 0)   // First game
         {
             HelpMenu.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(HelpBackButton);
             gameObject.SetActive(false);
         }
     }

@@ -5556,6 +5556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RecordText: {fileID: 2077148451}
   HelpMenu: {fileID: 1776140945}
+  HelpBackButton: {fileID: 2125700054}
 --- !u!114 &1027856633
 MonoBehaviour:
   m_ObjectHideFlags: 0

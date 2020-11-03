@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
+using System.Collections;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -76,14 +77,22 @@ public class SettingsManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("PlayerPrefCreated") == 0)
         {
-            RestoreDefaultInput();
-            RestoreDefaultParameter();
-            RestoreDefaultTerrain();
-            SaveInput();
-            SaveParameter();
-            SaveTerrain();
-            PlayerPrefs.SetInt("PlayerPrefCreated", 1);
+            StartCoroutine(SetUpParametersFirstUtilisation());
         }
+    }
+    IEnumerator SetUpParametersFirstUtilisation()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        RestoreDefaultInput();
+        RestoreDefaultParameter();
+        RestoreDefaultTerrain();
+        yield return new WaitForEndOfFrame();
+        SaveInput();
+        SaveParameter();
+        SaveTerrain();
+        PlayerPrefs.SetInt("PlayerPrefCreated", 1);
     }
 
     // ==========================================================
