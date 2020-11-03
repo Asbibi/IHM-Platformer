@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SetupEventSystem : MonoBehaviour
@@ -29,6 +27,16 @@ public class SetupEventSystem : MonoBehaviour
         standaloneInputModule = GetComponent<StandaloneInputModule>();
         standaloneInputModule.horizontalAxis = controllerInputsHAxis[PlayerPrefs.GetInt("MoveLatInput")];
         standaloneInputModule.verticalAxis = controllerInputsVAxis[PlayerPrefs.GetInt("MoveLatInput")];
-        standaloneInputModule.submitButton = controllerInputsButton[PlayerPrefs.GetInt("JumpInput")]; 
+        standaloneInputModule.submitButton = controllerInputsButton[PlayerPrefs.GetInt("JumpInput")];
+    }
+
+    public void UpdateStandaloneNavigation(int _navigation)
+    {
+        standaloneInputModule.horizontalAxis = controllerInputsHAxis[_navigation];
+        standaloneInputModule.verticalAxis = controllerInputsVAxis[_navigation];
+    }
+    public void UpdateStandaloneSubmit(int _submit)
+    {
+        standaloneInputModule.submitButton = controllerInputsButton[_submit];
     }
 }
