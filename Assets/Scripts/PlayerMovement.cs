@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public float speedXMax = 5;             // m/s
     public float speedYMin = -10;           // m/s
     public float jumpSpeedYInit = 1f;       // m/s
-    public float jumpSpeedXMax = 15f;       // m/s
+    public float jumpSpeedXInit = 15f;       // m/s
     public float dashSpeed = 15f;           // m/s
     private float previousMoovePlusJump;
 
@@ -119,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
         //Walljump
         if((leftWalled ||rightWalled) && !grounded){
             speedY = jumpSpeedYInit;
-            jumpSpeedX = leftWalled ? jumpSpeedXMax : -jumpSpeedXMax; //Pousse du mur
+            jumpSpeedX = leftWalled ? jumpSpeedXInit : -jumpSpeedXInit; //Pousse du mur
             leftWalled = !leftWalled;
             rightWalled = !rightWalled;
             remainJump = 1;

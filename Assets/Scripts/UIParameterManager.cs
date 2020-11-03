@@ -45,7 +45,7 @@ public class UIParameterManager : UIMenuOpenable
     }
     public void SetJumpWallSpeedX(string _speedStr)
     {
-        player.jumpSpeedXMax = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);
+        player.jumpSpeedXInit = float.Parse(_speedStr, CultureInfo.InvariantCulture.NumberFormat);
     }
     public void SetDashSpeedX(string _speedStr)
     {
@@ -66,7 +66,7 @@ public class UIParameterManager : UIMenuOpenable
     }
     public void SetJumpWallSpeedX(float _speedFlt)
     {
-        player.jumpSpeedXMax = _speedFlt;
+        player.jumpSpeedXInit = _speedFlt;
     }
     public void SetDashSpeedX(float _speedFlt)
     {
