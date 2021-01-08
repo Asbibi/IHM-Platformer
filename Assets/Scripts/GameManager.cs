@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     Wind windManager;    
     ScreenShake screenShake;
     UITimeManager timeManager;
+    SerialHandler serialHandler;
 
     Vector3 spawnPosition = Vector3.right*2;
 
@@ -73,6 +74,9 @@ public class GameManager : MonoBehaviour
             _circlePositionStart.z = 0;
             circleTranstion.transform.position = _circlePositionStart;
             circleTranstion.PlayTransition();
+
+            serialHandler = GetComponent<SerialHandler>();
+            serialHandler.player = player.GetComponent<PlayerMovement>();
         }
     }
 
@@ -247,13 +251,29 @@ public class GameManager : MonoBehaviour
             if (instance.visualFeedBacks)
                 ShakeScreen(0.2f, 0.8f);
             instance.SpawnPlayer();
+            instance.serialHandler.NotifyDeath();
         }
         else
             Debug.LogError("Try accessing null GameManager instance at RespawnPlayer()");
     }
     private void SpawnPlayer()
     {
-        player.transform.position = instance.spawnPosition;
+        player.GetComponent<PlayerMovement>().replacePlayer(instance.spawnPosition);
     }
     #endregion
+
+    public static void SetSlowMotion(bool slowMotion)
+    {
+        if (!PauseMenu.GameIsPaused)
+        {
+            if (slowMotion)
+            {
+                Time.timeScale = 0.3f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+        }
+    }
 }

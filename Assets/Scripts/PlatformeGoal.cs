@@ -14,7 +14,7 @@ public class PlatformeGoal : PlatformSpecial
 
     protected override void OnPlayerDetection(PlayerMovement _player)
     {
-        if (_player.GetRealY(true) < transform.position.y + height + toleranceHeight)
+        if (_player.GetRealY(true) < transform.position.y + height + toleranceHeight || _player.GetUpperY(true) > transform.position.y - height - toleranceHeight)
             GameManager.LoadScene(idNextScene);
     }
 

@@ -38,6 +38,26 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.Pause();
         }
+
+        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            playerMovement.SetGravityMultiplier(1);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            playerMovement.SetGravityMultiplier(-1);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            GameManager.SetSlowMotion(true);
+            Debug.Log("Slow");
+        }
+        else if (Input.GetKeyUp(KeyCode.F))
+        {
+            GameManager.SetSlowMotion(false);
+            Debug.Log("Normal");
+        }
     }
 
 }

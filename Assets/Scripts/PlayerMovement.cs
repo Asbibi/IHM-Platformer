@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Frictions and Jump Parameters")]
     public float gravity = 0.3f;            // m/s²
+    public float gravityMultiplier = 1.0f;
     public float wallFriction = 0.1f;       // m/s² - gravité appliquée lorsque le joueur est contre un mur
     public float friction = 1f;             // m/s²
     public float wallJumpAirFriction = 1f;  // m/s² - friction de l'air sur X qui réduit la vitesse d'ejection après un wall jump
@@ -35,10 +36,10 @@ public class PlayerMovement : MonoBehaviour
     private int remainJump;
     public float dashGravitySuspensionDelay = -1;  // s - delay during speedY = 0, starting at dash input | if =<0, there is no suspension
     private float timerDashGravitySuspension = 0;
-    
+
     [Header("Paramètres de détection des collisions")]
     public float replacementTolerance = 0.01f;  // m
-    private bool grounded;
+    [SerializeField] private bool grounded;
     private bool rightWalled;
     private bool leftWalled;
 
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     {
         collider2d = GetComponent<BoxCollider2D>();
         _animator = GetComponentInChildren<Animator>();
-        sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;        
+        sizeX = GetComponent<SpriteRenderer>().bounds.extents.x;
         sizeY = GetComponent<SpriteRenderer>().bounds.extents.y;
         _audioManager = AudioManager.instance;
     }
@@ -85,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
             AddTrails();
             HandleAnimations();
         }
-        if(audioFeedBack)
+        if (audioFeedBack)
         {
             HandleFX();
         }
@@ -100,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpSpeedX += _moveSpeedX * 0.01f * airControlMultiplier;
             if (Mathf.Sign(jumpSpeedX) == Mathf.Sign(_moveSpeedX))  // if sign of jumpSpeedX has changed
-            { 
+            {
                 moveSpeedX = -jumpSpeedX;
                 jumpSpeedX = 0;
             }
@@ -108,37 +109,39 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moveSpeedX = _moveSpeedX;
-        }        
+        }
         if (moveSpeedX > 0 && rightWalled)
             moveSpeedX = 0;
         else if (moveSpeedX < 0 && leftWalled)
             moveSpeedX = 0;
     }
     public void Jump()
-    { 
+    {
         //Walljump
-        if((leftWalled ||rightWalled) && !grounded){
-            speedY = jumpSpeedYInit;
+        if ((leftWalled || rightWalled) && !grounded)
+        {
+            speedY = jumpSpeedYInit * Mathf.Sign(gravityMultiplier);
             jumpSpeedX = leftWalled ? jumpSpeedXInit : -jumpSpeedXInit; //Pousse du mur
             leftWalled = !leftWalled;
             rightWalled = !rightWalled;
             remainJump = 1;
         }
-        
+
         else if (remainJump > 0)
         {
-            speedY = jumpSpeedYInit;
+            speedY = jumpSpeedYInit * Mathf.Sign(gravityMultiplier);
             grounded = false;
             remainJump--;
         }
     }
     public void ForceJump(float _jumpSpeed)
     {
-        speedY = _jumpSpeed;
+        speedY = _jumpSpeed * Mathf.Sign(gravityMultiplier);
         grounded = false;
-        remainJump = maxNumberOfJump -1;
+        remainJump = maxNumberOfJump - 1;
     }
-    public void Dash(float dir){
+    public void Dash(float dir)
+    {
         jumpSpeedX = dashSpeed * dir;
         timerDashGravitySuspension = dashGravitySuspensionDelay;
         if (showVisualFeedBack && Mathf.Abs(dir) > 0.2f)
@@ -160,10 +163,37 @@ public class PlayerMovement : MonoBehaviour
     }
     public float GetRealY(bool withTolerance = false)
     {
-        if (withTolerance)
-            return transform.position.y - sizeY - replacementTolerance;
+        if (gravityMultiplier >= 0)
+        {
+            if (withTolerance)
+                return transform.position.y - sizeY - replacementTolerance;
+            else
+                return transform.position.y - sizeY;
+        }
         else
-            return transform.position.y - sizeY;
+        {
+            if (withTolerance)
+                return transform.position.y + sizeY + replacementTolerance;
+            else
+                return transform.position.y + sizeY;
+        }
+    }
+    public float GetUpperY(bool withTolerance = false)
+    {
+        if (gravityMultiplier >= 0)
+        {
+            if (withTolerance)
+                return transform.position.y + sizeY + replacementTolerance;
+            else
+                return transform.position.y + sizeY;
+        }
+        else
+        {
+            if (withTolerance)
+                return transform.position.y - sizeY - replacementTolerance;
+            else
+                return transform.position.y - sizeY;
+        }
     }
     public void UpdatePlayAudioFeedBack()
     {
@@ -173,8 +203,23 @@ public class PlayerMovement : MonoBehaviour
     {
         showVisualFeedBack = GameManager.GetVisualFeedBack();
     }
-
-
+    public void replacePlayer(Vector3 position)
+    {
+        transform.position = position;
+        speedX = 0;
+        speedY = 0;
+    }
+    public void SetGravityMultiplier(float multiplier)
+    {
+        if (multiplier != 0)
+        {
+            gravityMultiplier = multiplier;
+            if (multiplier > 0)
+                transform.GetChild(0).localRotation = Quaternion.identity;
+            else
+                transform.GetChild(0).localRotation = Quaternion.Euler(Vector3.forward * 180);
+        }
+    }
 
 
 
@@ -182,10 +227,6 @@ public class PlayerMovement : MonoBehaviour
     // ===================== Compute Speed Methods =====================
     private void ApplySpeedX()
     {
-        /*float _spX = speedX;
-        if(!grounded && speedX == 0)
-            _spX = wind.x * 2;
-        _spX *= (1 + (wind.x * Mathf.Sign(speedX)));*/
         transform.position += Vector3.right * speedX * Time.deltaTime;
     }
     private void ApplySpeedY()
@@ -200,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
     {
         RaycastHit2D[] _results = new RaycastHit2D[5];
         int _nbResult;
-        
+
         float _nearestDistanceRight = Mathf.Infinity;
         float _nearestDistanceLeft = Mathf.Infinity;
 
@@ -229,7 +270,7 @@ public class PlayerMovement : MonoBehaviour
         if (_nbResult == 0)
             leftWalled = false;
         else
-        {            
+        {
             for (int i = 0; i < _nbResult; i++)
             {
                 RaycastHit2D _rch2d = _results[i];
@@ -245,10 +286,10 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         #region SecurityRightLeft
-        if(rightWalled && leftWalled)
+        if (rightWalled && leftWalled)
         {
             Debug.LogWarning("Would had been Blocked !");
-            RaycastHit2D rch = Physics2D.Raycast(transform.position + Vector3.right * sizeX, Vector2.right, replacementTolerance*2);
+            RaycastHit2D rch = Physics2D.Raycast(transform.position + Vector3.right * sizeX, Vector2.right, replacementTolerance * 2);
             if (rch.collider != null)
             {
                 Debug.Log(rch.collider.name);
@@ -280,7 +321,7 @@ public class PlayerMovement : MonoBehaviour
         int _nbResult;
 
         #region CheckGrounded
-        _nbResult = collider2d.Cast(Vector2.down, _results, Mathf.Abs(speedY) * Time.deltaTime + replacementTolerance);
+        _nbResult = collider2d.Cast(new Vector2(0, -Mathf.Sign(gravityMultiplier)), _results, Mathf.Abs(speedY) * Time.deltaTime + replacementTolerance);
         if (_nbResult == 0)
             grounded = false;
         else
@@ -291,9 +332,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 RaycastHit2D _rch2d = _results[i];
                 if (_rch2d.collider != null
-                            &&(_rch2d.collider.CompareTag("Solide")
+                            && (_rch2d.collider.CompareTag("Solide")
                                 || (_rch2d.collider.CompareTag("Holographique")
-                                    && (GetRealY(true) > (_rch2d.collider.transform.position.y + _rch2d.collider.GetComponent<SpriteRenderer>().bounds.extents.y/2))))
+                                    && (GetRealY(true) * Mathf.Sign(gravityMultiplier) > Mathf.Sign(gravityMultiplier) * (_rch2d.collider.transform.position.y + _rch2d.collider.GetComponent<SpriteRenderer>().bounds.extents.y / 2))))
                             && (_rch2d.distance < _nearestDistance))
                 {
                     _nearestDistance = _rch2d.distance;
@@ -309,35 +350,61 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-            if (speedY < 0 && _nearestDistance < -speedY * Time.deltaTime)
+            if (gravityMultiplier >= 0 && speedY < 0 && _nearestDistance < Mathf.Abs(speedY * Time.deltaTime))
             {
                 // grounded :
                 grounded = true;
                 speedY = 0;
-                transform.position += new Vector3(0, -_nearestDistance + replacementTolerance, 0);
+                transform.position += new Vector3(0, (-_nearestDistance + replacementTolerance) * Mathf.Sign(gravityMultiplier), 0);
+                remainJump = maxNumberOfJump;
+            }
+            else if (gravityMultiplier < 0 && speedY > 0 && _nearestDistance < Mathf.Abs(speedY * Time.deltaTime))
+            {
+                // grounded :
+                grounded = true;
+                speedY = 0;
+                transform.position += new Vector3(0, (-_nearestDistance + replacementTolerance) * Mathf.Sign(gravityMultiplier), 0);
                 remainJump = maxNumberOfJump;
             }
         }
         #endregion
 
         #region CheckCeilling
-        _nbResult = collider2d.Cast(Vector2.up, _results, Mathf.Abs(speedY) * Time.deltaTime + replacementTolerance);
-        //Debug.Log("Results : " + _nbResult);
+        _nbResult = collider2d.Cast(new Vector2(0, Mathf.Sign(gravityMultiplier)), _results, Mathf.Abs(speedY) * Time.deltaTime + replacementTolerance);
         if (_nbResult != 0)
         {
+            int idPlatSpe = -1;
             float _nearestDistance = Mathf.Infinity;
             for (int i = 0; i < _nbResult; i++)
             {
                 RaycastHit2D _rch2d = _results[i];
                 if (_rch2d.collider != null && _rch2d.collider.CompareTag("Solide") && (_rch2d.distance < _nearestDistance))
+                {
                     _nearestDistance = _rch2d.distance;
+                    if (_rch2d.collider.gameObject.GetComponent<PlatformSpecial>() != null)
+                        idPlatSpe = i;
+                }
             }
 
-            //Debug.Log("Distance : " + _nearestDistance + " <? " + speedY * Time.deltaTime);
-            if (speedY > 0 && _nearestDistance < speedY * Time.deltaTime)
+
+            // On regarde si on est sur une plateforme spéciale
+            if (idPlatSpe >= 0 && _results[idPlatSpe].distance == _nearestDistance)
+            {
+                _results[idPlatSpe].collider.gameObject.GetComponent<PlatformSpecial>().PlayerDetected(this);
+                Debug.Log(_results[idPlatSpe].collider.gameObject.name);
+            }
+
+
+
+            if (gravityMultiplier >= 0 && speedY > 0 && _nearestDistance < Mathf.Abs(speedY * Time.deltaTime))
             {
                 speedY = 0;
-                transform.position += new Vector3(0, _nearestDistance - replacementTolerance, 0);
+                transform.position += new Vector3(0, (_nearestDistance - replacementTolerance), 0);
+            }
+            else if (gravityMultiplier < 0 && speedY < 0 && _nearestDistance < Mathf.Abs(speedY * Time.deltaTime))
+            {
+                speedY = 0;
+                transform.position += new Vector3(0, (_nearestDistance - replacementTolerance), 0);
             }
         }
         #endregion
@@ -351,12 +418,12 @@ public class PlayerMovement : MonoBehaviour
         jumpSpeedX = ComputeSpeedWithFriction(jumpSpeedX, wallJumpAirFriction);
         if (grounded && (moveSpeedX == 0 || Mathf.Sign(moveSpeedX) != Mathf.Sign(jumpSpeedX)))
             jumpSpeedX = 0;
-        
+
         speedX = Mathf.Lerp(moveSpeedX + jumpSpeedX, previousMoovePlusJump, inertiaCoefficientX);  // => lerping between the perfect control (moveSpeedX + jumpSpeedX) and the current speed (speedX, kept from the previous frame)
         previousMoovePlusJump = speedX;
-        if(!grounded && speedX == 0)
+        if (!grounded && speedX == 0)
             speedX = wind.x * 2;
-        speedX = speedX*(1 + (wind.x * Mathf.Sign(speedX)));
+        speedX = speedX * (1 + (wind.x * Mathf.Sign(speedX)));
     }
     private void ComputeSpeedY()
     {
@@ -364,16 +431,18 @@ public class PlayerMovement : MonoBehaviour
             speedY = 0;
         else
         {
-            if (speedY > speedYMin)
+            if ((gravityMultiplier >= 0 && speedY > speedYMin) || (gravityMultiplier < 0 && speedY < -speedYMin))
             {
                 if ((leftWalled || rightWalled) && (speedY <= 0))
                 {
-                    speedY -= wallFriction * Time.deltaTime;
-                    if(audioFeedBack){
-                        FindObjectOfType<AudioManager>().Play("SlideFX"); 
+                    speedY -= wallFriction * gravityMultiplier * Time.deltaTime;
+                    if (audioFeedBack)
+                    {
+                        FindObjectOfType<AudioManager>().Play("SlideFX");
                     }
-                }else
-                    speedY -= gravity * Time.deltaTime;
+                }
+                else
+                    speedY -= gravity * gravityMultiplier * Time.deltaTime;
             }
         }
     }
@@ -394,23 +463,29 @@ public class PlayerMovement : MonoBehaviour
         return _speed;
     }
 
-    // ===================== Collisions =====================
-    private void AddTrails(){
-        if (delayBeforeTrail <= 0){
-            if (Mathf.Abs(speedX) > dashSpeed*0.9f){  // if dash
+    // ===================== Feedbacks =====================
+    private void AddTrails()
+    {
+        if (delayBeforeTrail <= 0)
+        {
+            if (Mathf.Abs(speedX) > dashSpeed * 0.9f)
+            {  // if dash
                 Instantiate(playerTrail, transform.position, transform.rotation);
                 delayBeforeTrail = frameSpaceBetweenTrails;
             }
 
-            if (grounded && Mathf.Abs(speedX) > speedXMax*0.66f){    // walking fast
-                Instantiate(smokeTrail, transform.position + groundSmokeOffset, transform.rotation);
+            if (grounded && Mathf.Abs(speedX) > speedXMax * 0.66f)
+            {    // walking fast
+                Instantiate(smokeTrail, transform.position + groundSmokeOffset * Mathf.Sign(gravityMultiplier), transform.rotation);
                 delayBeforeTrail = frameSpaceBetweenTrails;
             }
-            else if (rightWalled && speedY < 0){    // falling against wall on left side  
+            else if (rightWalled && speedY < 0)
+            {    // falling against wall on left side  
                 Instantiate(smokeTrail, transform.position + wallSmokeOffset, transform.rotation);
                 delayBeforeTrail = frameSpaceBetweenTrails;
             }
-            else if (leftWalled && speedY < 0){   // falling against wall on left side
+            else if (leftWalled && speedY < 0)
+            {   // falling against wall on left side
                 Instantiate(smokeTrail, transform.position - wallSmokeOffset, transform.rotation);
                 delayBeforeTrail = frameSpaceBetweenTrails;
             }
@@ -418,18 +493,20 @@ public class PlayerMovement : MonoBehaviour
         else
             delayBeforeTrail -= Time.deltaTime;
     }
-    private void HandleAnimations(){
+    private void HandleAnimations()
+    {
         _animator.SetBool("isGrounded", grounded);
-        _animator.SetFloat("speedY", speedY); 
+        _animator.SetFloat("speedY", speedY * Mathf.Sign(gravityMultiplier));
     }
 
-    private void HandleFX(){
-        if(_animator.GetAnimatorTransitionInfo(0).IsUserName("TransitionUP") && _animator.GetAnimatorTransitionInfo(0).normalizedTime == 0)
+    private void HandleFX()
+    {
+        if (_animator.GetAnimatorTransitionInfo(0).IsUserName("TransitionUP") && _animator.GetAnimatorTransitionInfo(0).normalizedTime == 0)
             _audioManager.Play("JumpFX");
-            
-        if(_animator.GetAnimatorTransitionInfo(0).IsUserName("TransitionDown") && _animator.GetAnimatorTransitionInfo(0).normalizedTime == 0)
+
+        if (_animator.GetAnimatorTransitionInfo(0).IsUserName("TransitionDown") && _animator.GetAnimatorTransitionInfo(0).normalizedTime == 0)
             _audioManager.Play("JumpDownFX");
-        if((leftWalled || rightWalled) && speedY < 0)
+        if ((leftWalled || rightWalled) && speedY < 0)
             _audioManager.Play("SlideFX");
     }
 }
